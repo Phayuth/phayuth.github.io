@@ -1,8 +1,7 @@
 ---
 title: SIMULTANEOUS LOCALIZATION AND MAPPING WITH MATLAB
-date: YYYY-MM-DD HH:MM:SS +/-TTTT
 categories: [TOP_CATEGORIE, SUB_CATEGORIE]
-tags: [TAG]     # TAG names should always be lowercase
+tags: [tutorial]     # TAG names should always be lowercase
 ---
 
 # Lidar-Jetson-Nano-Matlab-Hector-SLAM
