@@ -5,7 +5,6 @@ tags: [tutorial]     # TAG names should always be lowercase
 ---
 
 # Getting Started with Beaglebone Blue
-<img src="https://se.mathworks.com/hardware-support/beaglebone-blue/_jcr_content/imageParsys/image.adapt.full.high.jpg/1590140118098.jpg" width="47%" height="47%"><img src="BBBPower.png" width="50%" height="50%">
 
 Beaglebone Blue is a linux debian base OS device that allow user player around with robotic stuff. There are 3 ways to powering the board. You can plug all 3 power sources at the same time without any problem.
 

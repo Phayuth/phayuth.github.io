@@ -5,7 +5,6 @@ tags: [tutorial]     # TAG names should always be lowercase
 ---
 
 # Lidar-Jetson-Nano-Matlab-Hector-SLAM
-![](https://github.com/Phayuth/Lidar-Jetson-Nano-Matlab-SLAM/blob/master/MatlabSlamDemo.png?raw=true)
 # Requirement
 ## Hardware
 1x [Nvidia Jetson Nano](https://developer.nvidia.com/sites/default/files/akamai/embedded/images/jetsonNano/JetsonNano-DevKit_Front-Top_Right_trimmed.jpg)\
