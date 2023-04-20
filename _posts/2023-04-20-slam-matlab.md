@@ -46,7 +46,6 @@ $ sudo chmod +x initenv.sh
 $ sudo sh initenv.sh
 ```
 # Connection
-![](https://github.com/s1mpleton/Lidar-Jetson-Nano-Matlab-SLAM/blob/master/Lidar-Connection-Jetsonnano.png)
 ```
 Step 1 : Connect YDX4 and its USB adapter to Jetson Nano via usb serial port
 Step 2 : Connect Jetson Nano Ethernet port to Router port
