@@ -1,6 +1,6 @@
 ---
-title: GETTING START WITH BEAGLEBON BLUE
-categories: [TOP_CATEGORIE, SUB_CATEGORIE]
+title: Getting Started with Beaglebone Blue
+categories: [Embeded System]
 tags: [tutorial]     # TAG names should always be lowercase
 ---
 
@@ -34,12 +34,12 @@ Beaglebone Blue is a linux debian base OS device that allow user player around w
 Follow the precedure from Flash Image eMMC flasher section
 - Connect to the BBB via browser Cloud9 IDE address : 192.168. 7.2:3000
 - Navigate to /opt/scripts/tools/eMMC
-```
+```bash
 $ cd
 $ cd opt/scripts/tools/eMMC
 ```
 Execute init-eMMC-flasher-v3.sh
-```
+```bash
 $ sudo ./init-eMMC-flasher-v3.sh
 ```
 - BBB will start to go in to flashing mode. Do not disconnect the power.
@@ -47,7 +47,7 @@ $ sudo ./init-eMMC-flasher-v3.sh
 
 ### Connect WIFI
 On Terminal Cloud9 IDE
-```
+```bash
 $ connmanctl
 $ tether wifi off
 $ enable wifi
@@ -60,7 +60,7 @@ $ exit
 ```
 
 ### Shutdown BBB
-```
+```bash
 $ sudo shutdown now
 ```
 
@@ -88,31 +88,31 @@ Case Simulink generated file.
 After the file is working properly. Let start making it auto start.
 
 2. Create a shell script (name.sh) in ```/usr/bin/```
-```
+```bash
 cd /usr/bin/
 sudo touch name.sh
 sudo nano name.sh
 ```
 - Put the following code in the .sh file and modify it up to your desired
-```
+```bash
 #!/bin/bash
 cd /home/debian/name_of_folder
 sudo ./name_program.elf
 ```
 - Exit out from editor
 - Make it executable
-```
+```bash
 chmod u+x /usr/bin/name.sh
 ```
 
 3. Create service file in ```/lib/systemd/``` (if not working create in ```/lib/systemd/system/```)
-```
+```bash
 cd /lib/system/
 sudo touch my_srv.service 
 sudo nano my_srv.service
 ```
 - Put the following code in the file
-```
+```bash
 [Unit]
 Description=description of code
 After=syslog.target network.target
@@ -131,19 +131,19 @@ sudo ln -s /lib/systemd/my_srv.service /etc/systemd/system/my_srv.service
 ```
 
 5. Start service
-```
+```bash
 sudo systemctl daemon-reload
 sudo systemctl enable my_srv.service
 sudo systemctl start my_srv.service
 ```
 
 6. Reboot to take effect
-```
+```bash
 sudo reboot now
 ```
 
 7. Control service
-```
+```bash
 sudo systemctl status my_srv.service
 sudo systemctl stop my_srv.service
 sudo systemctl start my_srv.service
