@@ -16,10 +16,10 @@ Beaglebone Blue is a linux debian base OS device that allow user player around w
 - In a condition where we need to update the debian, we can follow the instruction below.
 
 ### Images Download
-| MATLAB | Image Link : https://beagleboard.org/latest-images |
-| --- | --- |
-| [Debian 9.5 2018-10-07 4GB SD IoT](https://debian.beagleboard.org/images/bone-debian-9.5-iot-armhf-2018-10-07-4gb.img.xz)| Allow the BBB directly boot from the SD card |
-| Debian 9.5 2018-10-07 4GB SD IoT eMMC flasher | Require the BBB to flash the eMMC before use |
+|MATLAB|[Image Link](https://beagleboard.org/latest-images)|
+|:-----|:--------------------------------------------------|
+|[Debian 9.5 2018-10-07 4GB SD IoT](https://debian.beagleboard.org/images/bone-debian-9.5-iot-armhf-2018-10-07-4gb.img.xz)| Allow the BBB directly boot from the SD card |
+|Debian 9.5 2018-10-07 4GB SD IoT eMMC flasher | Require the BBB to flash the eMMC before use |
 
 
 ### Flash Image eMMC flasher
@@ -35,12 +35,12 @@ Follow the precedure from Flash Image eMMC flasher section
 - Connect to the BBB via browser Cloud9 IDE address : 192.168. 7.2:3000
 - Navigate to /opt/scripts/tools/eMMC
 ```bash
-$ cd
-$ cd opt/scripts/tools/eMMC
+cd
+cd opt/scripts/tools/eMMC
 ```
 Execute init-eMMC-flasher-v3.sh
 ```bash
-$ sudo ./init-eMMC-flasher-v3.sh
+sudo ./init-eMMC-flasher-v3.sh
 ```
 - BBB will start to go in to flashing mode. Do not disconnect the power.
 - Wait until the LED completely shutdown then unplug the power and replug back in.
@@ -48,20 +48,20 @@ $ sudo ./init-eMMC-flasher-v3.sh
 ### Connect WIFI
 On Terminal Cloud9 IDE
 ```bash
-$ connmanctl
-$ tether wifi off
-$ enable wifi
-$ scan wifi
-$ services
-$ agent on
-$ connect {wifi name ex:wifi_f45eab_.................}
-$ password
-$ exit
+connmanctl
+tether wifi off
+enable wifi
+scan wifi
+services
+agent on
+connect {wifi name ex:wifi_f45eab_.................}
+password
+exit
 ```
 
 ### Shutdown BBB
 ```bash
-$ sudo shutdown now
+sudo shutdown now
 ```
 
 ### Auto Execute Program on Startup
