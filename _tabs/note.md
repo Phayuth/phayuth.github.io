@@ -4,6 +4,19 @@ icon: fas fa-info-circle
 order: 4
 ---
 
+
+## Lecture Note
+
+### [General Lecture Note](https://phayuth.github.io/lectures_note/compilation/document.pdf)
+
+### [Mobile Robotic](https://phayuth.github.io/lectures_note/mobile_robot/document.pdf) 
+
+### [Robotic Manipulator](https://phayuth.github.io/lectures_note/arm_robot/document.pdf)
+
+
+
+
+
 <!-- > Add Markdown syntax content to file `_tabs/about.md`{: .filepath } and it will show up on this page.
 {: .prompt-tip } -->
 
