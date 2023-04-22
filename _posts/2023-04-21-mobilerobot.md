@@ -1,5 +1,7 @@
 ---
 title: Mobile Robotic
 categories: [Robotic]
-tags: [tutorial]     # TAG names should always be lowercase
+tags: [lecture]     # TAG names should always be lowercase
 ---
+
+A note for mobile robotic.

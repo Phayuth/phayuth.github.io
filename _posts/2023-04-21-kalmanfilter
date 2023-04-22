@@ -1,5 +1,7 @@
 ---
 title: Kalman Filter
 categories: [Robotic]
-tags: [Lecture]     # TAG names should always be lowercase
+tags: [lecture]     # TAG names should always be lowercase
 ---
+
+A small guide on Kalman filter.
