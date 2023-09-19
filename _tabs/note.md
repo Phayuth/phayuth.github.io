@@ -14,7 +14,9 @@ order: 4
 ### [Robotic Manipulator](https://phayuth.github.io/lectures_note/arm_robot/document.pdf)
 
 
+## Presentation
 
+### [Point Cloud Noise Removal](https://itcedukh-my.sharepoint.com/:p:/g/personal/phayuth_yonrith_gsc_itc_edu_kh/ERueoSIs1q1FgpwhJbGSbeQBUWPy0OYwh9A93QRLfNEcMw?e=fSK4jA&nav=eyJzSWQiOjMwNSwiY0lkIjozNzUyOTMyNzA5fQ)
 
 
 <!-- > Add Markdown syntax content to file `_tabs/about.md`{: .filepath } and it will show up on this page.
