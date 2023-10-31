@@ -18,6 +18,7 @@ order: 4
 
 ### [Point Cloud Noise Removal](https://itcedukh-my.sharepoint.com/:p:/g/personal/phayuth_yonrith_gsc_itc_edu_kh/ERueoSIs1q1FgpwhJbGSbeQBUWPy0OYwh9A93QRLfNEcMw?e=fSK4jA&nav=eyJzSWQiOjMwNSwiY0lkIjozNzUyOTMyNzA5fQ)
 
+### [RandLA-Net](https://itcedukh-my.sharepoint.com/:p:/g/personal/phayuth_yonrith_gsc_itc_edu_kh/EVBaZTvpofBMhwIB34dtxOEB6IG2PBKg8pLYej_KpVEImA?e=vU81dg)
 
 <!-- > Add Markdown syntax content to file `_tabs/about.md`{: .filepath } and it will show up on this page.
 {: .prompt-tip } -->
