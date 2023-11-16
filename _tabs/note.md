@@ -20,6 +20,7 @@ order: 4
 
 ### [RandLA-Net](https://itcedukh-my.sharepoint.com/:p:/g/personal/phayuth_yonrith_gsc_itc_edu_kh/EVBaZTvpofBMhwIB34dtxOEB6IG2PBKg8pLYej_KpVEImA?e=vU81dg)
 
+### [G-Fair CNU 2023](https://itcedukh-my.sharepoint.com/:p:/g/personal/phayuth_yonrith_gsc_itc_edu_kh/EcFxaswsWnJPoxX-fN5mb4wB5w0HlE4QBOyL7s0SwOoUiw?e=VOXAF6)
 <!-- > Add Markdown syntax content to file `_tabs/about.md`{: .filepath } and it will show up on this page.
 {: .prompt-tip } -->
 
