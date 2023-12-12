@@ -21,6 +21,9 @@ order: 4
 ### [RandLA-Net](https://itcedukh-my.sharepoint.com/:b:/g/personal/phayuth_yonrith_gsc_itc_edu_kh/EX-IwpiIC4tMq_210UJqamgB7vhka7oSGUbL3CO_g_4Feg?e=S0aUu6)
 
 ### [G-Fair CNU 2023](https://itcedukh-my.sharepoint.com/:p:/g/personal/phayuth_yonrith_gsc_itc_edu_kh/EcFxaswsWnJPoxX-fN5mb4wB5w0HlE4QBOyL7s0SwOoUiw?e=VOXAF6)
+
+### [Robotic Harvesting](https://itcedukh-my.sharepoint.com/:p:/g/personal/phayuth_yonrith_gsc_itc_edu_kh/EcvDr0090rdAtvCBvZsRUT8Bx1uUAQcL_Tt6QOru7vMI5A?e=IHFoQL)
+
 <!-- > Add Markdown syntax content to file `_tabs/about.md`{: .filepath } and it will show up on this page.
 {: .prompt-tip } -->
 
