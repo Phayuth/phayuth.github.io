@@ -32,6 +32,14 @@ body {
 }
 
 pre {
-    white-space: pre-wrap; /* Ensures preformatted text wraps */
+    white-space: pre-wrap;
     word-wrap: break-word;
+}
+
+code {
+  font-family: Consolas,"courier new";
+  color: crimson;
+  /* background-color: #f1f1f1; */
+  padding: 2px;
+  font-size: 100%;
 }
