@@ -12,6 +12,9 @@ body {
   color: white;
   height: 100vh;
   padding-top: 20px;
+  position: fixed; /* Fixes the sidebar in place */
+  top: 0; /* Ensures it starts from the top of the viewport */
+  left: 0;
 }
 
 .sidebar a {
@@ -29,6 +32,7 @@ body {
   padding: 20px;
   flex: 1;
   background-color: #f4f4f4;
+  margin-left: 200px; /* Leaves space for the fixed sidebar */
 }
 
 pre {
