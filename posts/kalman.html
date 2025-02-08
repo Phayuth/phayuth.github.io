@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Kalman</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+    <div class="sidebar">
+        <a href="../index.html">Home</a>
+        <a href="../tabs/about.html">About</a>
+        <a href="../tabs/note.html">Note</a>
+    </div>
+    <div class="content">
+        <h1>Kalman Filter</h1>
+
+        <h2>What is Kalman Filter?</h2>
+        <p>The <strong>Kalman Filter</strong> was developed by Dr. Rudolf Emil Kálmán. It is a powerful algorithm for
+            filtering noisy data and has been widely used in various applications such as:</p>
+        <ul>
+            <li>Signal processing</li>
+            <li>Control systems</li>
+            <li>Optimization</li>
+            <li>Sensor fusion</li>
+            <li>System identification</li>
+        </ul>
+
+        <p>The key feature of the Kalman Filter is its ability to operate in real-time (online), meaning it can process
+            and filter incoming data as it arrives.</p>
+
+        <h3>Key Components:</h3>
+        <ol>
+            <li><strong>State Estimation:</strong> The algorithm estimates the current state of a system based on
+                previous observations.</li>
+            <li><strong>Prediction:</strong> It predicts the next state using the system model.</li>
+            <li><strong>Correction:</strong> The algorithm then adjusts its prediction based on new measurements,
+                minimizing error.</li>
+        </ol>
+
+        <h3>Applications:</h3>
+        <ul>
+            <li>Tracking objects in motion (e.g., aircraft, robots)</li>
+            <li>Smoothing noisy sensor data (e.g., GPS signals)</li>
+            <li>Estimating parameters in dynamic systems</li>
+        </ul>
+
+        <h2>Experiment on Temperature Measurement</h2>
+        <p>Below is an experiment using the Kalman Filter to smooth out temperature measurements from a noisy sensor.
+        </p>
+
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/k1XaXOsMRmg"
+            title="Kalman Filter Temperature Measurement" frameborder="0" allowfullscreen></iframe>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Beagle Bone</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+    <div class="sidebar">
+        <a href="../index.html">Home</a>
+        <a href="../tabs/about.html">About</a>
+        <a href="../tabs/note.html">Note</a>
+    </div>
+    <div class="content">
+        <h1>Beaglebone Blue Guide</h1>
+        <p>Beaglebone Blue is a Linux Debian-based OS device that allows users to experiment with robotic projects.
+            There are 3 ways to power the board. You can plug all 3 power sources at the same time without any problems.
+        </p>
+
+        <h2>Update BBB Debian</h2>
+        <ul>
+            <li>BBB can run from 2 storage sources:
+                <ul>
+                    <li>SD Card</li>
+                    <li>eMMC (Embedded Multi Media Card): storage soldered directly onto the board.</li>
+                </ul>
+            </li>
+            <li>Out of the box, BBB has a pre-installed Debian OS that users can use right away.</li>
+            <li>If you need to update the Debian OS, follow the instructions below.</li>
+        </ul>
+
+        <h2>Images Download</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>MATLAB</th>
+                    <th><a href="https://beagleboard.org/latest-images">Image Link</a></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="https://debian.beagleboard.org/images/bone-debian-9.5-iot-armhf-2018-10-07-4gb.img.xz">Debian
+                            9.5 2018-10-07 4GB SD IoT</a></td>
+                    <td>Allows the BBB to boot directly from the SD card</td>
+                </tr>
+                <tr>
+                    <td>Debian 9.5 2018-10-07 4GB SD IoT eMMC flasher</td>
+                    <td>Requires the BBB to flash the eMMC before use</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Flash Image eMMC Flasher</h2>
+        <ol>
+            <li>Download <a href="https://www.balena.io/etcher/">BalenaEtcher</a></li>
+            <li>Flash the downloaded image to the SD card using BalenaEtcher</li>
+            <li>Put the SD card into the BBB card slot</li>
+            <li>Hold the SD button on the BBB while connecting it to the PC</li>
+            <li>Wait until the LED flashes, then release the SD button</li>
+            <li>When new storage appears on the PC, the BBB is ready to use</li>
+        </ol>
+
+        <h2>Flash Image Non-eMMC Flasher</h2>
+        <p>Follow the procedure from the "Flash Image eMMC Flasher" section.</p>
+        <ol>
+            <li>Connect to the BBB via the browser Cloud9 IDE at: <code>192.168.7.2:3000</code></li>
+            <li>Navigate to <code>/opt/scripts/tools/eMMC</code> and execute <code>init-eMMC-flasher</code>:</li>
+            <pre><code>
+                cd
+                cd opt/scripts/tools/eMMC
+                sudo ./init-eMMC-flasher-v3.sh
+            </code></pre>
+            <li>BBB will begin flashing mode. Do not disconnect the power.</li>
+            <li>Wait until the LEDs completely shut down, then unplug and replug the power.</li>
+        </ol>
+
+        <h2>Connect to WiFi</h2>
+        <p>On the Terminal in Cloud9 IDE, run the following commands:</p>
+        <pre><code>
+            connmanctl
+            tether wifi off
+            enable wifi
+            scan wifi
+            services
+            agent on
+            connect {wifi name ex:wifi_f45eab_.................}
+            password
+            exit
+        </code></pre>
+
+        <h2>Shutdown BBB</h2>
+        <pre><code>
+            sudo shutdown now
+        </code></pre>
+
+        <h2>Auto Execute Program on Startup</h2>
+        <p>References: <a
+                href="https://stackoverflow.com/questions/28854705/executing-a-script-on-startup-using-beaglebone-black">Link1</a>
+            | <a href="https://gist.github.com/tstellanova/7323116">Link2</a></p>
+
+        <h3>Verify Executable Application</h3>
+        <p>Ensure you have a main compiled file ready to run by executing it via <code>./name_program</code>. For
+            Simulink-generated files:</p>
+        <ol>
+            <li>On BBB terminal in Cloud9:
+                <pre><code>
+                    mkdir name_of_folder
+                </code></pre>
+            </li>
+            <li>On Simulink, go to <code>config</code> and change the target folder to the one created on BBB. Run the
+                build.</li>
+            <li>On BBB, go into the folder and run the file to verify it works:
+                <pre><code>
+                    cd name_of_folder
+                    sudo ./name_program.elf
+                </code></pre>
+            </li>
+        </ol>
+
+        <h3>Create Auto Execute</h3>
+        <p>After the file is working properly, follow these steps to make it auto start:</p>
+        <ol>
+            <li>Create a shell script in <code>/usr/bin/</code> and make it executable:
+                <pre><code>
+                    cd /usr/bin/
+                    sudo touch name.sh
+                    sudo chmod u+x /usr/bin/name.sh
+                    sudo nano name.sh
+                </code></pre>
+                <p>Place the following code in the script and modify it to your needs:</p>
+                <pre><code>
+                    #!/bin/bash
+                    cd /home/debian/name_of_folder
+                    sudo ./name_program.elf
+                </code></pre>
+            </li>
+            <li>Create a service file in <code>/lib/systemd/</code> (or <code>/lib/systemd/system/</code>):
+                <pre><code>
+                    cd /lib/system/
+                    sudo touch my_srv.service
+                    sudo nano my_srv.service
+                </code></pre>
+                <p>Insert the following content:</p>
+                <pre><code>
+                    [Unit]
+                    Description=description of code
+                    After=syslog.target network.target
+
+                    [Service]
+                    Type=simple
+                    ExecStart=/usr/bin/name.sh
+
+                    [Install]
+                    WantedBy=multi-user.target
+                </code></pre>
+            </li>
+            <li>Create a symbolic link between your script and <code>/etc</code>:
+                <pre><code>
+                    sudo ln -s /lib/systemd/my_srv.service /etc/systemd/system/my_srv.service
+                </code></pre>
+            </li>
+            <li>Start the service:
+                <pre><code>
+                    sudo systemctl daemon-reload
+                    sudo systemctl enable my_srv.service
+                    sudo systemctl start my_srv.service
+                    </code></pre>
+            </li>
+            <li>Reboot to take effect:
+                <pre><code>
+                    sudo reboot now
+                </code></pre>
+            </li>
+            <li>Control the service:
+                <pre><code>
+                    sudo systemctl status my_srv.service
+                    sudo systemctl stop my_srv.service
+                    sudo systemctl start my_srv.service
+                    sudo systemctl disable my_srv.service
+                </code></pre>
+            </li>
+        </ol>
+    </div>
+</body>
+
+</html>

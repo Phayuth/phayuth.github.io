@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Jetbot</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+    <div class="sidebar">
+        <a href="../index.html">Home</a>
+        <a href="../tabs/about.html">About</a>
+        <a href="../tabs/note.html">Note</a>
+    </div>
+    <div class="content">
+        <h1>Jetson Nano Jetbot using some other electronic parts</h1>
+
+        <h2>Hardware</h2>
+        <ul>
+            <li>1 x <a
+                    href="https://cdn.antratek.nl/media/product/c93/nvidia-jetson-nano-developer-kit-945-13450-0000-100-fb6.jpg">Nvidia
+                    Jetson Nano</a></li>
+            <li>1 x <a href="https://ae01.alicdn.com/kf/HTB1xtn8dhiH3KVjSZPfq6xBiVXay.jpg_q90.jpg">Wifi Module</a></li>
+            <li>1 x <a href="https://images-na.ssl-images-amazon.com/images/I/71kN49AetUL._SL1000_.jpg">Motor Driver
+                    L298N</a></li>
+            <li>4 x or 2 x <a href="https://images-na.ssl-images-amazon.com/images/I/418YctAC26L.jpg">TT Motor</a></li>
+            <li>1 x <a href="https://images-na.ssl-images-amazon.com/images/I/61W%2BeG%2BLigL._AC_SX569_.jpg">PCA9685
+                    Board</a></li>
+            <li>1 x <a
+                    href="https://cdn.shopify.com/s/files/1/0176/3274/products/std-camera_1024x.jpg?v=1540885797">Rasp
+                    pi Camera v2</a></li>
+            <li>Battery for Motor Driver and Jetson Nano (12V)</li>
+            <li>Other accessories such as buck converter, wheels, bolts, nuts, spacer nuts, joystick controller, etc.
+            </li>
+        </ul>
+
+        <h2>Connection and Build</h2>
+        <!-- This section can be elaborated with specific connection details -->
+
+        <h2>Jetson Image Setup</h2>
+        <ol>
+            <li>Download Jetson Nano image: <a
+                    href="https://drive.google.com/open?id=1G5nw0o3Q6E08xZM99ZfzQAe7-qAXxzHN">Link</a></li>
+            <li>Boot the downloaded image to an SD card using Etcher</li>
+            <li>Insert the SD card into Jetson Nano</li>
+            <li>Boot up the Jetson Nano</li>
+        </ol>
+
+        <h2>Configuration</h2>
+        <p>On Jetson Terminal:</p>
+        <pre><code>
+sudo usermod -aG i2c jetbot
+i2cdetect -y -r 1
+  </code></pre>
+        <p>The default PCA address should be <code>0X40</code>. To change the I2C address in the Adafruit library,
+            navigate to:</p>
+        <pre><code>
+cd usr/local/lib/python3.6/dist-packages/Adafruit_MotorHAT-1.4.0-py3.6.egg/Adafruit_MotorHAT
+sudo gedit Adafruit_MotorHAT_Motors.py
+  </code></pre>
+        <p>Search for:</p>
+        <pre><code>
+def __init__ (self,addr=0x60,freq=1600,i2c=none,i2c_bus=none)
+  </code></pre>
+        <p>Change it to:</p>
+        <pre><code>
+def __init__ (self,addr=0x40,freq=1600,i2c=none,i2c_bus=none)
+  </code></pre>
+        <p>Save the file.</p>
+
+        <blockquote>
+            The Robot should be remotely controllable via accessing Jupyter Notebook on a browser.
+        </blockquote>
+
+        <h2>Accessing Jupyter Notebook</h2>
+        <p>On another PC browser:</p>
+        <ol>
+            <li>Open the browser and access: <code>https://{jetbot_ip_address}:8888</code></li>
+            <li>Enter Jetbot password: <strong>jetbot</strong></li>
+            <li>All notebooks are ready to use.</li>
+        </ol>
+    </div>
+</body>
+
+</html>

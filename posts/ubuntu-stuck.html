@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Fix Ubuntu</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+    <div class="sidebar">
+        <a href="../index.html">Home</a>
+        <a href="../tabs/about.html">About</a>
+        <a href="../tabs/note.html">Note</a>
+    </div>
+    <div class="content">
+        <h1>Fixing Ubuntu Boot Stuck by Nvidia Driver</h1>
+        <p>When you install Ubuntu and it gets stuck on boot, it is likely due to the Nvidia driver. To fix this, you
+            need to boot into recovery mode and remove the Nvidia driver. Here's how:</p>
+        <ol>
+            <li>Rapidly Press Shift Key to enter Ubuntu boot option</li>
+            <li>Go to Advanced</li>
+            <li>Go to recovery mode</li>
+            <li>Go to root terminal</li>
+            <li><code>dpkg -l | grep -i nvidia</code></li>
+            <li><code>sudo apt-get remove --purge '^nvidia-.*'</code></li>
+            <li><code>sudo apt autoremove</code></li>
+            <li><code>exit</code> and boot up as normal</li>
+        </ol>
+
+        <h2>Reference</h2>
+        <p><a href="https://askubuntu.com/questions/206283/how-can-i-uninstall-a-nvidia-driver-completely">Link</a></p>
+    </div>
+</body>
+
+</html>
