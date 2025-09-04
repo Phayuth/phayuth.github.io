@@ -5,15 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Beagle Bone</title>
+    <title>Beaglebone</title>
     <link rel="stylesheet" href="../style.css">
 </head>
 
 <body>
     <div class="sidebar">
         <a href="../index.html">Home</a>
-        <a href="../tabs/about.html">About</a>
-        <a href="../tabs/note.html">Note</a>
+
     </div>
     <div class="content">
         <h1>Beaglebone Blue Guide</h1>
@@ -55,9 +54,9 @@
             <li>Connect to the BBB via the browser Cloud9 IDE at: <code>192.168.7.2:3000</code></li>
             <li>Navigate to <code>/opt/scripts/tools/eMMC</code> and execute <code>init-eMMC-flasher</code>:</li>
             <pre><code>
-                cd
-                cd opt/scripts/tools/eMMC
-                sudo ./init-eMMC-flasher-v3.sh
+cd
+cd opt/scripts/tools/eMMC
+sudo ./init-eMMC-flasher-v3.sh
             </code></pre>
             <li>BBB will begin flashing mode. Do not disconnect the power.</li>
             <li>Wait until the LEDs completely shut down, then unplug and replug the power.</li>
@@ -66,20 +65,20 @@
         <h2>Connect to WiFi</h2>
         <p>On the Terminal in Cloud9 IDE, run the following commands:</p>
         <pre><code>
-            connmanctl
-            tether wifi off
-            enable wifi
-            scan wifi
-            services
-            agent on
-            connect {wifi name ex:wifi_f45eab_.................}
-            password
-            exit
+connmanctl
+tether wifi off
+enable wifi
+scan wifi
+services
+agent on
+connect {wifi name ex:wifi_f45eab_.................}
+password
+exit
         </code></pre>
 
         <h2>Shutdown BBB</h2>
         <pre><code>
-            sudo shutdown now
+sudo shutdown now
         </code></pre>
 
         <h2>Auto Execute Program on Startup</h2>
@@ -93,15 +92,15 @@
         <ol>
             <li>On BBB terminal in Cloud9:
                 <pre><code>
-                    mkdir name_of_folder
+mkdir name_of_folder
                 </code></pre>
             </li>
             <li>On Simulink, go to <code>config</code> and change the target folder to the one created on BBB. Run the
                 build.</li>
             <li>On BBB, go into the folder and run the file to verify it works:
                 <pre><code>
-                    cd name_of_folder
-                    sudo ./name_program.elf
+cd name_of_folder
+sudo ./name_program.elf
                 </code></pre>
             </li>
         </ol>
@@ -111,61 +110,61 @@
         <ol>
             <li>Create a shell script in <code>/usr/bin/</code> and make it executable:
                 <pre><code>
-                    cd /usr/bin/
-                    sudo touch name.sh
-                    sudo chmod u+x /usr/bin/name.sh
-                    sudo nano name.sh
+cd /usr/bin/
+sudo touch name.sh
+sudo chmod u+x /usr/bin/name.sh
+sudo nano name.sh
                 </code></pre>
                 <p>Place the following code in the script and modify it to your needs:</p>
                 <pre><code>
-                    #!/bin/bash
-                    cd /home/debian/name_of_folder
-                    sudo ./name_program.elf
+#!/bin/bash
+cd /home/debian/name_of_folder
+sudo ./name_program.elf
                 </code></pre>
             </li>
             <li>Create a service file in <code>/lib/systemd/</code> (or <code>/lib/systemd/system/</code>):
                 <pre><code>
-                    cd /lib/system/
-                    sudo touch my_srv.service
-                    sudo nano my_srv.service
+cd /lib/system/
+sudo touch my_srv.service
+sudo nano my_srv.service
                 </code></pre>
                 <p>Insert the following content:</p>
                 <pre><code>
-                    [Unit]
-                    Description=description of code
-                    After=syslog.target network.target
+[Unit]
+Description=description of code
+After=syslog.target network.target
 
-                    [Service]
-                    Type=simple
-                    ExecStart=/usr/bin/name.sh
+[Service]
+Type=simple
+ExecStart=/usr/bin/name.sh
 
-                    [Install]
-                    WantedBy=multi-user.target
+[Install]
+WantedBy=multi-user.target
                 </code></pre>
             </li>
             <li>Create a symbolic link between your script and <code>/etc</code>:
                 <pre><code>
-                    sudo ln -s /lib/systemd/my_srv.service /etc/systemd/system/my_srv.service
+sudo ln -s /lib/systemd/my_srv.service /etc/systemd/system/my_srv.service
                 </code></pre>
             </li>
             <li>Start the service:
                 <pre><code>
-                    sudo systemctl daemon-reload
-                    sudo systemctl enable my_srv.service
-                    sudo systemctl start my_srv.service
+sudo systemctl daemon-reload
+sudo systemctl enable my_srv.service
+sudo systemctl start my_srv.service
                     </code></pre>
             </li>
             <li>Reboot to take effect:
                 <pre><code>
-                    sudo reboot now
+sudo reboot now
                 </code></pre>
             </li>
             <li>Control the service:
                 <pre><code>
-                    sudo systemctl status my_srv.service
-                    sudo systemctl stop my_srv.service
-                    sudo systemctl start my_srv.service
-                    sudo systemctl disable my_srv.service
+sudo systemctl status my_srv.service
+sudo systemctl stop my_srv.service
+sudo systemctl start my_srv.service
+sudo systemctl disable my_srv.service
                 </code></pre>
             </li>
         </ol>

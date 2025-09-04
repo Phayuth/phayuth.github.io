@@ -12,19 +12,18 @@
 <body>
     <div class="sidebar">
         <a href="../index.html">Home</a>
-        <a href="../tabs/about.html">About</a>
-        <a href="../tabs/note.html">Note</a>
+
     </div>
     <div class="content">
         <h1>Jetson Nano, with PiCam2, Gstreamer, Gstreamer Pipeline</h1>
 
         <h2>Gstreamer-1.0 Installation and Setup</h2>
         <pre><code>
-      sudo add-apt-repository universe
-      sudo add-apt-repository multiverse
-      sudo apt-get update
-      sudo apt-get install gstreamer1.0-tools gstreamer1.0-alsa gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav
-      sudo apt-get install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-good1.0-dev libgstreamer-plugins-bad1.0-dev
+sudo add-apt-repository universe
+sudo add-apt-repository multiverse
+sudo apt-get update
+sudo apt-get install gstreamer1.0-tools gstreamer1.0-alsa gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav
+sudo apt-get install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-good1.0-dev libgstreamer-plugins-bad1.0-dev
         </code></pre>
 
         <h2>Gstreamer Command</h2>
@@ -36,7 +35,7 @@
 
         <h2>Gstreamer Example Pipeline Command</h2>
         <pre><code>
-      gst-launch-1.0 nvarguscamerasrc ! nvoverlaysink -e
+gst-launch-1.0 nvarguscamerasrc ! nvoverlaysink -e
         </code></pre>
         <p>The pipeline is constructed in a sequential line: <code>{media source} ! {modification} ! {media sink}</code>
             with '!' as the separator.</p>
@@ -59,7 +58,7 @@
         <h2>Camera Source</h2>
         <p>To list available cameras and supported formats:</p>
         <pre><code>
-      v4l2-ctl --list-devices
+v4l2-ctl --list-devices
         </code></pre>
 
         <h3>CSI Cameras</h3>
@@ -69,8 +68,8 @@
         <h3>V4L2 Cameras</h3>
         <p>V4L2 cameras connect via USB (e.g., Logitech C series webcam). To install V4L2:</p>
         <pre><code>
-      sudo apt-get install v4l-utils
-      v4l2-ctl --device=/dev/video0 --list-formats-ext
+sudo apt-get install v4l-utils
+v4l2-ctl --device=/dev/video0 --list-formats-ext
         </code></pre>
         <p>For more info, visit <a
                 href="https://github.com/dusty-nv/jetson-inference/blob/master/docs/aux-streaming.md#source-code">this
@@ -79,18 +78,18 @@
         <h2>Camera Stream</h2>
         <h3>RaspPi CamV2 Source</h3>
         <pre><code>
-      gst-launch-1.0 nvarguscamerasrc ! 'video/x-raw(memory:NVMM), width=(int)1280, height=(int)720, format=(string)NV12, framerate=(fraction)30/1' ! nvoverlaysink -e
+gst-launch-1.0 nvarguscamerasrc ! 'video/x-raw(memory:NVMM), width=(int)1280, height=(int)720, format=(string)NV12, framerate=(fraction)30/1' ! nvoverlaysink -e
         </code></pre>
 
         <h3>USB Camera Source</h3>
         <pre><code>
-      gst-launch-1.0 v4l2src device="/dev/video1" ! "video/x-raw, width=640, height=480, format=(string)YUY2" ! xvimagesink -e
+gst-launch-1.0 v4l2src device="/dev/video1" ! "video/x-raw, width=640, height=480, format=(string)YUY2" ! xvimagesink -e
         </code></pre>
 
         <h2>Camera Record</h2>
         <p>To record video and save to a file:</p>
         <pre><code>
-  gst-launch-1.0 nvarguscamerasrc maxperf=1 ! 'video/x-raw(memory:NVMM), width=(int)1280, height=(int)720, format=(string)NV12, framerate=(fraction)30/1' ! nvv4l2h265enc control-rate=1 bitrate=8000000 ! 'video/x-h265, stream-format=(string)byte-stream' ! h265parse ! qtmux ! filesink location=test.mp4 -e
+gst-launch-1.0 nvarguscamerasrc maxperf=1 ! 'video/x-raw(memory:NVMM), width=(int)1280, height=(int)720, format=(string)NV12, framerate=(fraction)30/1' ! nvv4l2h265enc control-rate=1 bitrate=8000000 ! 'video/x-h265, stream-format=(string)byte-stream' ! h265parse ! qtmux ! filesink location=test.mp4 -e
           </code></pre>
 
 
@@ -98,23 +97,23 @@
         <p>Ensure both Jetson Nano and PC are on the same network.</p>
         <p>On Jetson Nano, install the RTSP server library:</p>
         <pre><code>
-      sudo apt-get install libgstrtspserver-1.0
+sudo apt-get install libgstrtspserver-1.0
         </code></pre>
 
         <p>Clone the gst-rtsp-server repository:</p>
         <pre><code>
-      git clone https://github.com/GStreamer/gst-rtsp-server
+git clone https://github.com/GStreamer/gst-rtsp-server
         </code></pre>
 
         <p>Navigate to the <code>gst-rtsp-server-master/example</code> directory:</p>
         <pre><code>
-      cd ~/gst-rtsp-server-master/example
-      gcc test-launch.c -o test-launch $(pkg-config --cflags --libs gstreamer-1.0 gstreamer-rtsp-server-1.0)
+cd ~/gst-rtsp-server-master/example
+gcc test-launch.c -o test-launch $(pkg-config --cflags --libs gstreamer-1.0 gstreamer-rtsp-server-1.0)
         </code></pre>
 
         <p>Then run:</p>
         <pre><code>
-      sudo ./test-launch "videotestsrc ! nvvidconv ! nvv4l2h265enc ! h265parse ! video/x-h265, stream-format=byte-stream ! rtph265pay name=pay0 pt=96"
+sudo ./test-launch "videotestsrc ! nvvidconv ! nvv4l2h265enc ! h265parse ! video/x-h265, stream-format=byte-stream ! rtph265pay name=pay0 pt=96"
         </code></pre>
 
         <p>You can view the camera stream via VLC by accessing the network URL: <code>rtsp://JETSON_IP:8554/test</code>
