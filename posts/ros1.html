@@ -15,113 +15,113 @@
 
     </div>
     <div class="content">
-        <h1>Package Organization</h1>
+        <h1>ROS Melodic</h1>
 
         <h2>Package Structure</h2>
-        <pre>
-    ws_catkin
-    ├── devel
-    ├── build
-    └── src
-        └── package_name
-            ├── CMakeList.txt
-            ├── package.xml
-            ├── arduino           --- arduino_sketch.ino
-            ├── config            --- config.yaml
-            ├── doc               --- pdf jpg
-            ├── include
-            │   └── package_name  --- cppheader.h
-            ├── src               --- cppsource.cpp
-            ├── scripts           --- python_script.py
-            ├── launch            --- launch_file.launch
-            ├── action            --- action.action
-            ├── msg               --- msg.msg
-            ├── srv               --- srv.srv
-            ├── rviz              --- rviz_config.rviz
-            ├── test              --- unitest.cpp/.py
-            └── gazebo
-                ├── meshes        --- model.STL/.dae
-                ├── models        --- model.config/.sdf/.urdf
-                ├── urdf          --- model.xacro/.gazebo
-                └── worlds        --- model.world
-        </pre>
+        <pre><code>
+ws_catkin
+├── devel
+├── build
+└── src
+    └── package_name
+        ├── CMakeList.txt
+        ├── package.xml
+        ├── arduino           --- arduino_sketch.ino
+        ├── config            --- config.yaml
+        ├── doc               --- pdf jpg
+        ├── include
+        │   └── package_name  --- cppheader.h
+        ├── src               --- cppsource.cpp
+        ├── scripts           --- python_script.py
+        ├── launch            --- launch_file.launch
+        ├── action            --- action.action
+        ├── msg               --- msg.msg
+        ├── srv               --- srv.srv
+        ├── rviz              --- rviz_config.rviz
+        ├── test              --- unitest.cpp/.py
+        └── gazebo
+            ├── meshes        --- model.STL/.dae
+            ├── models        --- model.config/.sdf/.urdf
+            ├── urdf          --- model.xacro/.gazebo
+            └── worlds        --- model.world
+        </code></pre>
 
         <h2>Workspaces and Package</h2>
 
         <h3>Create Workspace</h3>
-        <pre>
-    mkdir catkin_ws && cd catkin_ws
-    wstool init src
-    catkin_make
-    source devel/setup.bash
-        </pre>
+        <pre><code>
+mkdir catkin_ws && cd catkin_ws
+wstool init src
+catkin_make
+source devel/setup.bash
+        </code></pre>
 
         <h3>Add Repo to Workspace</h3>
-        <pre>
-    roscd; cd ../src
-    wstool set repo_name \
-    --git http://github.com/org/repo_name.git \
-    --version=melodic-devel
-    wstool up
-        </pre>
+        <pre><code>
+roscd; cd ../src
+wstool set repo_name \
+--git http://github.com/org/repo_name.git \
+--version=melodic-devel
+wstool up
+        </code></pre>
 
         <h3>Resolve Dependencies in Workspace</h3>
-        <pre>
-    sudo rosdep init  # only once
-    rosdep update
-    rosdep install --from-paths src --ignore-src \
-    --rosdistro=${ROS_DISTRO} -y
-        </pre>
+        <pre><code>
+sudo rosdep init  # only once
+rosdep update
+rosdep install --from-paths src --ignore-src \
+--rosdistro=${ROS_DISTRO} -y
+        </code></pre>
 
         <h3>Create Package</h3>
-        <pre>
-    catkin_create_pkg package_name [dependencies ...]
-        </pre>
+        <pre><code>
+catkin_create_pkg package_name [dependencies ...]
+        </code></pre>
 
         <h2>CMakeList.txt</h2>
 
         <h3>Skeleton</h3>
-        <pre>
-    cmake_minimum_required(VERSION 2.8.3)
-    project(package_name)
-    find_package(catkin REQUIRED)
-    catkin_package()
-        </pre>
+        <pre><code>
+cmake_minimum_required(VERSION 2.8.3)
+project(package_name)
+find_package(catkin REQUIRED)
+catkin_package()
+        </code></pre>
 
         <h3>Package Dependencies</h3>
-        <pre>
-    find_package(catkin REQUIRED COMPONENTS roscpp)
-    Tell dependent packages what headers or libraries to pull in when your package is declared as a catkin component:
-    catkin_package(
-      INCLUDE_DIRS include
-      LIBRARIES ${PROJECT_NAME}
-      CATKIN_DEPENDS roscpp)
-        </pre>
+        <pre><code>
+find_package(catkin REQUIRED COMPONENTS roscpp)
+Tell dependent packages what headers or libraries to pull in when your package is declared as a catkin component:
+catkin_package(
+    INCLUDE_DIRS include
+    LIBRARIES ${PROJECT_NAME}
+    CATKIN_DEPENDS roscpp)
+        </code></pre>
 
         <h3>Messages, Services</h3>
-        <pre>
-    find_package(catkin REQUIRED COMPONENTS message_generation std_msgs)
-    add_message_files(FILES MyMessage.msg)
-    add_service_files(FILES MyService.msg)
-    generate_messages(DEPENDENCIES std_msgs)
-    catkin_package(CATKIN_DEPENDS message_runtime std_msgs)
-        </pre>
+        <pre><code>
+find_package(catkin REQUIRED COMPONENTS message_generation std_msgs)
+add_message_files(FILES MyMessage.msg)
+add_service_files(FILES MyService.msg)
+generate_messages(DEPENDENCIES std_msgs)
+catkin_package(CATKIN_DEPENDS message_runtime std_msgs)
+        </code></pre>
 
         <h3>Build Libraries, Executables</h3>
-        <pre>
-    add_library(${PROJECT_NAME} src/cpp_code.cpp)
-    add_executable(${PROJECT_NAME}_node src/cpp_code.cpp)
-    target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES})
-    add_dependencies(${PROJECT_NAME} beginner_tutorials_generate_messages_cpp)
-        </pre>
+        <pre><code>
+add_library(${PROJECT_NAME} src/cpp_code.cpp)
+add_executable(${PROJECT_NAME}_node src/cpp_code.cpp)
+target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES})
+add_dependencies(${PROJECT_NAME} beginner_tutorials_generate_messages_cpp)
+        </code></pre>
 
         <h3>Installation</h3>
-        <pre>
-    install(TARGETS ${PROJECT_NAME} DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION})
-    install(TARGETS ${PROJECT_NAME}_node DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
-    install(PROGRAMS scripts/myscript DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
-    install(DIRECTORY launch DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
-        </pre>
+        <pre><code>
+install(TARGETS ${PROJECT_NAME} DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION})
+install(TARGETS ${PROJECT_NAME}_node DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+install(PROGRAMS scripts/myscript DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+install(DIRECTORY launch DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
+        </code></pre>
 
         <h2>Remote Connection</h2>
         <p>To connect remotely, ensure the following:</p>

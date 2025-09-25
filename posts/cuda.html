@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CUDA</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+    <div class="sidebar">
+        <a href="../index.html">Home</a>
+
+    </div>
+    <div class="content">
+        <h1>Install CUDA in ubuntu system</h1>
+        <p>This is a simple guide to install CUDA on an Ubuntu system.</p>
+        <h2>Check GPU model</h2>
+        <p>First, check your GPU model by running the following command in the terminal:</p>
+        <pre><code>lspci | grep -i nvidia</code></pre>
+
+
+        <h2>Download CUDA Toolkit</h2>
+        <p>Go to the <a href="https://developer.nvidia.com/cuda-downloads">NVIDIA CUDA Downloads page</a></p>
+        <p>Select:</p>
+        <ul>
+            <li>Operating System: <code>Linux</code></li>
+            <li>Architecture: <code>x86_64</code></li>
+            <li>Distribution: <code>Ubuntu</code></li>
+            <li>Version: <code>Your Ubuntu version (e.g., 20.04, 22.04)</code></li>
+            <li>Installer Type: <code>runfile (local)</code></li>
+        </ul>
+        Installation Instructions will be shown below the selection. Follow the instructions to download the CUDA
+        toolkit with <code>wget</code>.
+
+
+        <h2>Install CUDA Toolkit</h2>
+        <p>Open a terminal and navigate to the directory where you downloaded the CUDA runfile. Make the runfile
+            executable and run it:</p>
+        <pre><code>
+chmod +x your_cuda_installation.run
+sudo ./your_cuda_installation.run
+</code></pre>
+        <p>Follow the prompts to complete the installation. You may need to accept the EULA and choose installation
+            options.</p>
+        <p>During the installation, <b>you may be prompted to install the NVIDIA driver. Skip this by unchecking the
+                box. Because it will install a new driver on your system that might cause your pc to stuck on
+                reboot.</b>
+        </p>
+        <pre><code>
+CUDA Installer
+- [ ] Driver
+     [ ] 550.54.14
++ [X] CUDA Toolkit 12.4
+  [ ] CUDA Demo Suite 12.4
+  [ ] CUDA Documentation 12.4
+- [ ] Kernel Objects
+     [ ] nvidia-fs
+  Options
+  Install
+</code></pre>
+
+
+        <h2>Set Environment Variables</h2>
+        <p>Add the following lines to your <code>~/.bashrc</code> file to set the environment variables for CUDA:</p>
+        <pre><code>
+export PATH=/usr/local/cuda/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH</code></pre>
+        <p>Then, source the <code>~/.bashrc</code> file to apply the changes:</p>
+        <pre><code>source ~/.bashrc</code></pre>
+
+
+        <h2>Verify Installation</h2>
+        <p>To verify that CUDA is installed correctly, you can check the version of nvcc:</p>
+        <pre><code>nvcc --version</code></pre>
+        <p>You can also check the CUDA version using nvidia-smi:</p>
+        <pre><code>nvidia-smi</code></pre>
+        <p>The versions shown by nvcc and nvidia-smi may differ, which is normal. nvcc shows the CUDA toolkit version,
+            while
+            nvidia-smi shows the driver version.</p>
+        <p>That's it! You have successfully installed CUDA on your Ubuntu system.</p>
+
+    </div>
+</body>
+
+</html>
+
+<!-- https://stackoverflow.com/questions/53422407/different-cuda-versions-shown-by-nvcc-and-nvidia-smi --> -->
