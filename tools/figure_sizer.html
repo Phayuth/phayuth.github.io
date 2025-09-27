@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Figure Sizer</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        canvas {
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <a href="../index.html">Home</a>
+    </div>
+
+    <div class="content">
+        <h1>Figure Sizer</h1>
+        <p>Upload a PDF and draw a rectangle to measure figure dimensions as percentages of the page size.</p>
+
+        <div class="file-input-group">
+            <input type="file" id="pdfInput" accept=".pdf" />
+            <label for="pageInput">Page:</label>
+            <input type="number" id="pageInput" min="1" value="1" />
+            <label for="scaleSlider">Scale:</label>
+            <input type="range" id="scaleSlider" min="50" max="200" value="100" step="10">
+            <span id="scaleValue">100%</span>
+        </div>
+
+        <div class="canvas-container">
+            <canvas id="myCanvas"></canvas>
+        </div>
+
+        <div class="info-panel">
+            <h3>Computation Results</h3>
+            <div class="info-grid">
+                <div class="info-section">
+                    <h4>Paper Information</h4>
+                    <div class="info-item">
+                        <span class="info-label">Paper Type:</span>
+                        <span class="info-value" id="paperType">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Paper Size:</span>
+                        <span class="info-value" id="paperSize">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Page Dimensions:</span>
+                        <span class="info-value" id="pageDimensions">-</span>
+                    </div>
+                </div>
+                <div class="info-section">
+                    <h4>Rectangle Information</h4>
+                    <div class="info-item">
+                        <span class="info-label">Rectangle Size:</span>
+                        <span class="info-value" id="rectangleSize">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Width Percentage To Paper:</span>
+                        <span class="info-value" id="widthPercentage">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Height Percentage To Paper:</span>
+                        <span class="info-value" id="heightPercentage">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Aspect Ratio:</span>
+                        <span class="info-value" id="aspectRatio">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Height vs Width Percentage:</span>
+                        <span class="info-value" id="heightVsWidth">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="version-info">
+            <p>Version: 1.0.0</p>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+        <script src="figure_sizer.js"></script>
+    </div>
+</body>
+
+</html>

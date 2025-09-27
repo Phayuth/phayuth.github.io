@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Latex Subfigure Generator</title>
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        /* Project-specific overrides can go here if needed */
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <a href="../index.html">Home</a>
+    </div>
+
+    <div class="content">
+        <h1>Latex Subfigure Generator</h1>
+        <p>Generate LaTeX code for subfigures with customizable rows and columns.</p>
+
+        <div class="form-group">
+            <label for="rows">Rows:</label>
+            <select id="rows">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+
+            <label for="cols">Columns:</label>
+            <select id="cols">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+        </div>
+
+        <div class="checkbox-group">
+            <div class="checkbox-item">
+                <input type="checkbox" id="addSubcaption" checked>
+                <label for="addSubcaption">Add subcaption</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="addSubcaptionTitle" checked>
+                <label for="addSubcaptionTitle">Add subcaption title text</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="addHfill" checked>
+                <label for="addHfill">Add \hfill between columns</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="addVspace" checked>
+                <label for="addVspace">Add \vspace between rows</label>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-generate" onclick="generateLatex()">Generate LaTeX</button>
+            <button class="btn-copy" onclick="copyLatex()">Copy Code</button>
+        </div>
+
+        <h3>Generated LaTeX Code:</h3>
+        <textarea id="latexOutput" readonly placeholder="Generated LaTeX code will appear here..."></textarea>
+
+        <div class="version-info">
+            <p>Version: 1.0.0</p>
+        </div>
+
+    </div>
+
+    <script src="latex_subfig.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joint Trajectory Plotter</title>
+    <link rel="stylesheet" href="../style.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        .plot-container {
+            background-color: white;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .csv-preview {
+            max-height: 300px;
+            overflow: auto;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .csv-preview table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+
+        .csv-preview th,
+        .csv-preview td {
+            border: 1px solid #ddd;
+            padding: 5px 8px;
+            text-align: center;
+        }
+
+        .csv-preview th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+        }
+
+        .status-message {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+
+        .status-success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .status-error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <a href="../index.html">Home</a>
+    </div>
+
+    <div class="content">
+        <h1>Joint Trajectory Plotter</h1>
+
+        <div class="instructions">
+            <h3>Instructions</h3>
+            <ul>
+                <li>Upload a CSV file where each <strong>row</strong> represents a waypoint and each
+                    <strong>column</strong> represents a joint
+                </li>
+                <li>The trajectory progress will be normalized to [0, 1] range on the x-axis</li>
+                <li>Each joint will be plotted as a separate subplot</li>
+                <li>Hover over the plots to see detailed values</li>
+            </ul>
+        </div>
+
+        <div class="file-input-group">
+            <label for="csvFile">CSV File:</label>
+            <input type="file" id="csvFile" accept=".csv" />
+            <button type="button" class="btn-generate" onclick="plotTrajectory()">Plot Trajectory</button>
+            <button type="button" class="btn-copy" onclick="exportPlot()">Export Plot</button>
+        </div>
+
+        <div id="statusMessage" class="status-message" style="display: none;"></div>
+
+        <div id="csvPreview" class="csv-preview" style="display: none;">
+            <h3>CSV Data Preview:</h3>
+            <table id="previewTable"></table>
+        </div>
+
+        <div class="info-panel">
+            <h3>Trajectory Information</h3>
+            <div class="info-grid">
+                <div class="info-section">
+                    <h4>Dataset</h4>
+                    <div class="info-item">
+                        <span class="info-label">Number of Waypoints:</span>
+                        <span class="info-value" id="numWaypoints">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Number of Joints:</span>
+                        <span class="info-value" id="numJoints">-</span>
+                    </div>
+                </div>
+                <div class="info-section">
+                    <h4>Plot Settings</h4>
+                    <div class="info-item">
+                        <span class="info-label">X-axis Range:</span>
+                        <span class="info-value">[0, 1] (normalized)</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Plot Type:</span>
+                        <span class="info-value">Subplots per Joint</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="plotContainer" class="plot-container">
+            <div id="trajectoryPlot" style="width: 100%; height: auto;"></div>
+        </div>
+
+        <div class="version-info">
+            Joint Trajectory Plotter v1.0 - Uses Plotly.js for interactive plotting
+        </div>
+    </div>
+
+    <script src="joint_trajectory_plotter.js"></script>
+</body>
+
+</html>

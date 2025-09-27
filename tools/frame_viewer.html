@@ -2,6 +2,11 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Frame Viewer</title>
+    <link rel="stylesheet" href="../style.css">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <style>
         html,
@@ -13,14 +18,14 @@
             overflow: hidden;
         }
 
-        #container {
+        #localcontainer {
             display: flex;
             height: 100%;
             width: 100%;
         }
 
-        #sidebar {
-            width: 400px;
+        #localsidebar {
+            width: 500px;
             background: #eee;
             padding: 10px;
             overflow-y: auto;
@@ -34,155 +39,79 @@
 
         input {
             width: 80px;
-            margin-right: 5px;
-            margin-top: 2px;
+            margin-right: 8px;
+            margin-top: 3px;
+            margin-bottom: 3px;
         }
 
         button {
-            margin-right: 5px;
-            margin-top: 2px;
+            margin-right: 8px;
+            margin-top: 3px;
+            margin-bottom: 3px;
         }
 
         .outputField {
             width: 100%;
-            margin-top: 5px;
+            margin-top: 8px;
+            margin-bottom: 5px;
         }
 
         h3 {
-            margin-bottom: 5px;
-            margin-top: 10px;
+            margin-bottom: 8px;
+            margin-top: 15px;
         }
     </style>
 </head>
 
 <body>
-    <div id="container">
-        <div id="sidebar">
-            <h2>Frame Viewer</h2>
-            This tool visualizes a parent frame (fixed) and a child frame (movable). You can adjust the child frame's
-            translation and rotation, and view its transformation matrix and pose.
-
-            <h3>Translation</h3>
-            X: <input id="xInput" type="number" value="2" step="0.1"><br>
-            Y: <input id="yInput" type="number" value="1" step="0.1"><br>
-            Z: <input id="zInput" type="number" value="1" step="0.1"><br>
-            <button onclick="updatePlot()">Update Translation</button>
-
-            <h3>Rotation</h3>
-            Rotation in Δ degrees around each axis by clicking the corresponding button.<br>
-            ΔX (deg): <input id="rotXInput" type="number" value="10"><button onclick="rotateChild('x')">Rotate
-            </button><br>
-            ΔY (deg): <input id="rotYInput" type="number" value="10"><button onclick="rotateChild('y')">Rotate
-            </button><br>
-            ΔZ (deg): <input id="rotZInput" type="number" value="10"><button onclick="rotateChild('z')">Rotate
-            </button><br>
-            <button onclick="resetRotation()">Reset Rotation</button>
-
-            <h3>Matrix & Pose</h3>
-            Show the child frame's 4x4 transformation matrix [row major format] and pose [x,y,z,qx,qy,qz,qw].<br>
-            <button onclick="showMatrix()">Show</button><br>
-            <input type="text" id="matrixOutput" class="outputField" readonly placeholder="4x4 Matrix">
-            <input type="text" id="poseOutput" class="outputField" readonly placeholder="[x,y,z,qx,qy,qz,qw]">
-        </div>
-        <div id="framePlot"></div>
+    <div class="sidebar">
+        <a href="../index.html">Home</a>
     </div>
 
-    <script>
-        const T_parent = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]];
-        let T_child = [[1, 0, 0, 2], [0, 1, 0, 1], [0, 0, 1, 1], [0, 0, 0, 1]];
+    <div class="content">
+        <div id="localcontainer">
+            <div id="localsidebar">
+                <h2>Frame Viewer</h2>
+                This tool visualizes a parent frame (fixed) and a child frame (movable). You can adjust the child
+                frame's
+                translation and rotation, and view its transformation matrix and pose.
 
-        function degToRad(deg) { return deg * Math.PI / 180; }
+                <h3>Translation</h3>
+                <div style="margin-bottom: 8px;">
+                    X: <input id="xInput" type="number" value="2" step="0.1"><br>
+                    Y: <input id="yInput" type="number" value="1" step="0.1"><br>
+                    Z: <input id="zInput" type="number" value="1" step="0.1"><br>
+                </div>
+                <button type="button" class="btn-generate" onclick="updatePlot()">Update Translation</button>
 
-        function makeFrameTraces(T, namePrefix) {
-            const o = [T[0][3], T[1][3], T[2][3]];
-            const x = [o[0] + T[0][0], o[1] + T[1][0], o[2] + T[2][0]];
-            const y = [o[0] + T[0][1], o[1] + T[1][1], o[2] + T[2][1]];
-            const z = [o[0] + T[0][2], o[1] + T[1][2], o[2] + T[2][2]];
-            return [
-                { type: 'scatter3d', mode: 'lines+markers', name: namePrefix + ' X', x: [o[0], x[0]], y: [o[1], x[1]], z: [o[2], x[2]], line: { color: 'red', width: 6 }, marker: { size: 3 } },
-                { type: 'scatter3d', mode: 'lines+markers', name: namePrefix + ' Y', x: [o[0], y[0]], y: [o[1], y[1]], z: [o[2], y[2]], line: { color: 'green', width: 6 }, marker: { size: 3 } },
-                { type: 'scatter3d', mode: 'lines+markers', name: namePrefix + ' Z', x: [o[0], z[0]], y: [o[1], z[1]], z: [o[2], z[2]], line: { color: 'blue', width: 6 }, marker: { size: 3 } }
-            ];
-        }
+                <h3>Rotation</h3>
+                <div style="margin-bottom: 8px;">
+                    Rotation in Δ degrees around each axis by clicking the corresponding button.<br><br>
+                    ΔX (deg): <input id="rotXInput" type="number" value="10"><button type="button" class="btn-generate"
+                        onclick="rotateChild('x')">Rotate
+                    </button><br>
+                    ΔY (deg): <input id="rotYInput" type="number" value="10"><button type="button" class="btn-generate"
+                        onclick="rotateChild('y')">Rotate
+                    </button><br>
+                    ΔZ (deg): <input id="rotZInput" type="number" value="10"><button type="button" class="btn-generate"
+                        onclick="rotateChild('z')">Rotate
+                    </button><br>
+                </div>
+                <button type="button" class="btn-generate" onclick="resetRotation()">Reset Rotation</button>
 
-        const layout = { margin: { l: 0, r: 0, t: 0, b: 0 }, showlegend: false, scene: { aspectmode: 'cube', xaxis: { range: [-5, 5] }, yaxis: { range: [-5, 5] }, zaxis: { range: [0, 10] }, camera: null } };
+                <h3>Matrix & Pose</h3>
+                <div style="margin-bottom: 8px;">
+                    Show the child frame's 4x4 transformation matrix [row major format] and pose [x,y,z,qx,qy,qz,qw].<br>
+                </div>
+                <button type="button" class="btn-generate" onclick="showMatrix()">Show</button><br>
+                <input type="text" id="matrixOutput" class="outputField" readonly placeholder="4x4 Matrix">
+                <input type="text" id="poseOutput" class="outputField" readonly placeholder="[x,y,z,qx,qy,qz,qw]">
+            </div>
+            <div id="framePlot"></div>
+        </div>
 
-        function updatePlot() {
-            const gd = document.getElementById('framePlot');
-            if (gd.data && gd.layout && gd.layout.scene && gd.layout.scene.camera) {
-                layout.scene.camera = gd.layout.scene.camera;
-            }
-
-            T_child[0][3] = parseFloat(document.getElementById("xInput").value);
-            T_child[1][3] = parseFloat(document.getElementById("yInput").value);
-            T_child[2][3] = parseFloat(document.getElementById("zInput").value);
-
-            const traces = [...makeFrameTraces(T_parent, "Parent"), ...makeFrameTraces(T_child, "Child")];
-            Plotly.react('framePlot', traces, layout);
-        }
-
-        function rotateChild(axis) {
-            let deg = 0;
-            if (axis === 'x') deg = parseFloat(document.getElementById("rotXInput").value);
-            if (axis === 'y') deg = parseFloat(document.getElementById("rotYInput").value);
-            if (axis === 'z') deg = parseFloat(document.getElementById("rotZInput").value);
-
-            const theta = degToRad(deg);
-            let R = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
-            if (axis === 'x') R = [[1, 0, 0], [0, Math.cos(theta), -Math.sin(theta)], [0, Math.sin(theta), Math.cos(theta)]];
-            if (axis === 'y') R = [[Math.cos(theta), 0, Math.sin(theta)], [0, 1, 0], [-Math.sin(theta), 0, Math.cos(theta)]];
-            if (axis === 'z') R = [[Math.cos(theta), -Math.sin(theta), 0], [Math.sin(theta), Math.cos(theta), 0], [0, 0, 1]];
-
-            const C = T_child;
-            const newR = [
-                [C[0][0] * R[0][0] + C[0][1] * R[1][0] + C[0][2] * R[2][0], C[0][0] * R[0][1] + C[0][1] * R[1][1] + C[0][2] * R[2][1], C[0][0] * R[0][2] + C[0][1] * R[1][2] + C[0][2] * R[2][2]],
-                [C[1][0] * R[0][0] + C[1][1] * R[1][0] + C[1][2] * R[2][0], C[1][0] * R[0][1] + C[1][1] * R[1][1] + C[1][2] * R[2][1], C[1][0] * R[0][2] + C[1][1] * R[1][2] + C[1][2] * R[2][2]],
-                [C[2][0] * R[0][0] + C[2][1] * R[1][0] + C[2][2] * R[2][0], C[2][0] * R[0][1] + C[2][1] * R[1][1] + C[2][2] * R[2][1], C[2][0] * R[0][2] + C[2][1] * R[1][2] + C[2][2] * R[2][2]]
-            ];
-            for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) T_child[i][j] = newR[i][j];
-            updatePlot();
-        }
-
-        function resetRotation() {
-            const x = T_child[0][3], y = T_child[1][3], z = T_child[2][3];
-            T_child = [[1, 0, 0, x], [0, 1, 0, y], [0, 0, 1, z], [0, 0, 0, 1]];
-            updatePlot();
-        }
-
-        function rotMatrixToQuat(R) {
-            const m00 = R[0][0], m01 = R[0][1], m02 = R[0][2];
-            const m10 = R[1][0], m11 = R[1][1], m12 = R[1][2];
-            const m20 = R[2][0], m21 = R[2][1], m22 = R[2][2];
-            let qw, qx, qy, qz;
-            const trace = m00 + m11 + m22;
-            if (trace > 0) {
-                const s = 0.5 / Math.sqrt(trace + 1.0);
-                qw = 0.25 / s; qx = (m21 - m12) * s; qy = (m02 - m20) * s; qz = (m10 - m01) * s;
-            } else if (m00 > m11 && m00 > m22) {
-                const s = 2.0 * Math.sqrt(1.0 + m00 - m11 - m22);
-                qw = (m21 - m12) / s; qx = 0.25 * s; qy = (m01 + m10) / s; qz = (m02 + m20) / s;
-            } else if (m11 > m22) {
-                const s = 2.0 * Math.sqrt(1.0 + m11 - m00 - m22);
-                qw = (m02 - m20) / s; qx = (m01 + m10) / s; qy = 0.25 * s; qz = (m12 + m21) / s;
-            } else {
-                const s = 2.0 * Math.sqrt(1.0 + m22 - m00 - m11);
-                qw = (m10 - m01) / s; qx = (m02 + m20) / s; qy = (m12 + m21) / s; qz = 0.25 * s;
-            }
-            return [qx, qy, qz, qw];
-        }
-
-        function showMatrix() {
-            const matStr = T_child.map(r => r.map(v => v.toFixed(4)).join(", ")).join(", ");
-            document.getElementById("matrixOutput").value = matStr;
-            const pos = [T_child[0][3], T_child[1][3], T_child[2][3]];
-            const quat = rotMatrixToQuat(T_child);
-            const poseStr = [...pos, ...quat].map(v => v.toFixed(4)).join(", ");
-            document.getElementById("poseOutput").value = poseStr;
-        }
-
-        updatePlot();
-        window.onresize = () => Plotly.Plots.resize('framePlot');
-    </script>
+        <script src="frame_viewer.js"></script>
+    </div>
 </body>
 
 </html>
