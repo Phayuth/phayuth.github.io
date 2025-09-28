@@ -1,10 +1,6 @@
 // --- Three.js Visualization Module ---
 let scene, camera, renderer;
 let coordinateFrames = {}; // Store coordinate frames by link name
-let stlObjects = []; // Store loaded STL objects
-
-// STL Loader (will be loaded from CDN)
-let stlLoader;
 
 function initVisualization() {
     console.log('Initializing Three.js visualization...');
@@ -25,7 +21,7 @@ function initVisualization() {
     // Create scene
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0xf0f0f0);
-    
+
     // Rotate the entire scene so that Z is up (robotics convention)
     scene.rotation.x = -Math.PI / 2; // Rotate -90 degrees around X-axis
 
@@ -64,9 +60,6 @@ function initVisualization() {
 
     // Add mouse controls
     addMouseControls();
-    
-    // Initialize STL loader
-    initSTLLoader();
 
     // Handle window resize
     window.addEventListener('resize', onWindowResize);
@@ -214,7 +207,7 @@ function render() {
 }
 
 // Function called from URDF system to update visualization
-function updateVisualization(forwardKinematics, linkNames, visibility = {}, scale = 0.2) {
+function updateVisualization(forwardKinematics, linkData, visibility = {}, scale = 0.2) {
     if (!scene) {
         console.warn('Scene not initialized yet');
         return;
@@ -227,7 +220,8 @@ function updateVisualization(forwardKinematics, linkNames, visibility = {}, scal
     coordinateFrames = {};
 
     // Create coordinate frames for each link
-    linkNames.forEach((linkName, index) => {
+    linkData.forEach((linkInfo, index) => {
+        const linkName = linkInfo.name;
         const transformMatrix = forwardKinematics[linkName];
 
         // Create coordinate frame with specified scale
@@ -285,129 +279,18 @@ function addLinkLabel(frame, linkName, index) {
     context.fillText(linkName, canvas.width / 2, 13); // Adjusted vertical position
 
     const texture = new THREE.CanvasTexture(canvas);
-    const spriteMaterial = new THREE.SpriteMaterial({ 
+    const spriteMaterial = new THREE.SpriteMaterial({
         map: texture,
         transparent: true, // Enable transparency
         alphaTest: 0.1     // Improves rendering quality
     });
     const sprite = new THREE.Sprite(spriteMaterial);
-    
+
     // Smaller scale and positioned closer to frame
     sprite.scale.set(0.3, 0.075, 1); // Reduced from (0.5, 0.125, 1)
     sprite.position.set(0, 0.2, 0);  // Closer to frame, reduced from 0.4
 
     frame.add(sprite);
-}
-
-// --- STL Loading Functions ---
-function initSTLLoader() {
-    // Check if STLLoader is available (we'll load it dynamically)
-    if (typeof THREE.STLLoader !== 'undefined') {
-        stlLoader = new THREE.STLLoader();
-        console.log('STL Loader initialized');
-    } else {
-        console.warn('STLLoader not found, loading dynamically...');
-        loadSTLLoader();
-    }
-}
-
-function loadSTLLoader() {
-    // Dynamically load STL loader
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js';
-    script.onload = () => {
-        console.log('STL Loader script loaded');
-        if (typeof THREE.STLLoader !== 'undefined') {
-            stlLoader = new THREE.STLLoader();
-            console.log('STL Loader initialized');
-        }
-    };
-    script.onerror = () => {
-        console.error('Failed to load STL Loader');
-    };
-    document.head.appendChild(script);
-}
-
-// Load STL file from File input
-function loadSTLFile(file) {
-    if (!stlLoader) {
-        console.error('STL Loader not initialized');
-        return;
-    }
-    
-    if (!file || !file.name.toLowerCase().endsWith('.stl')) {
-        console.error('Please select a valid STL file');
-        return;
-    }
-    
-    const reader = new FileReader();
-    reader.onload = function(event) {
-        const contents = event.target.result;
-        
-        try {
-            // Parse STL data
-            const geometry = stlLoader.parse(contents);
-            
-            // Create material
-            const material = new THREE.MeshLambertMaterial({ 
-                color: 0x00ff00, // Green color
-                side: THREE.DoubleSide 
-            });
-            
-            // Create mesh
-            const mesh = new THREE.Mesh(geometry, material);
-            
-            // Center the geometry
-            geometry.computeBoundingBox();
-            const center = new THREE.Vector3();
-            geometry.boundingBox.getCenter(center);
-            geometry.translate(-center.x, -center.y, -center.z);
-            
-            // Scale if needed (optional)
-            const size = new THREE.Vector3();
-            geometry.boundingBox.getSize(size);
-            const maxDim = Math.max(size.x, size.y, size.z);
-            if (maxDim > 5) {
-                const scale = 5 / maxDim;
-                geometry.scale(scale, scale, scale);
-            }
-            
-            // Enable shadows
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-            
-            // Add to scene
-            scene.add(mesh);
-            stlObjects.push(mesh);
-            
-            // Update display
-            render();
-            
-            console.log('STL file loaded successfully:', file.name);
-            
-        } catch (error) {
-            console.error('Error parsing STL file:', error);
-        }
-    };
-    
-    reader.onerror = function() {
-        console.error('Error reading STL file');
-    };
-    
-    // Read as ArrayBuffer for binary STL files
-    reader.readAsArrayBuffer(file);
-}
-
-// Clear all STL objects
-function clearSTLObjects() {
-    stlObjects.forEach(obj => {
-        scene.remove(obj);
-        if (obj.geometry) obj.geometry.dispose();
-        if (obj.material) obj.material.dispose();
-    });
-    stlObjects = [];
-    render();
-    console.log('All STL objects cleared');
 }
 
 // Initialize when DOM is ready

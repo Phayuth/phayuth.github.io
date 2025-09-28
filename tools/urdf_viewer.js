@@ -27,7 +27,48 @@ const sampleUrdfText = `
 </robot>
 `;
 
-// Global variables for current URDF data
+const sampleUrdfTextvisual = `
+<robot name="test_robot">
+  <!-- Base Link -->
+  <link name="base_link"/>
+
+  <!-- Joint 1 -->
+  <joint name="joint1" type="revolute">
+    <parent link="base_link"/>
+    <child link="link1"/>
+    <origin xyz="0 0 0.1" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14159" upper="3.14159" effort="100" velocity="1"/>
+  </joint>
+
+  <!-- Link 1 -->
+  <link name="link1"/>
+
+  <!-- Joint 2 -->
+  <joint name="joint2" type="revolute">
+    <parent link="link1"/>
+    <child link="link2"/>
+    <origin xyz="0 0 0.3" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="100" velocity="1"/>
+  </joint>
+
+  <!-- Link 2 -->
+  <link name="link2"/>
+
+  <!-- Joint 3 -->
+  <joint name="joint3" type="revolute">
+    <parent link="link2"/>
+    <child link="end_effector"/>
+    <origin xyz="0.25 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14159" upper="3.14159" effort="50" velocity="2"/>
+  </joint>
+
+  <!-- End Effector -->
+  <link name="end_effector"/>
+</robot>`;
+
 let currentUrdfText = sampleUrdfText;
 let parser, urdf, links, joints, parentMap;
 let frameVisibility = {}; // Track visibility state of each frame
@@ -46,7 +87,9 @@ function loadUrdfFromText(urdfText) {
         }
 
         // Parse links and joints
-        links = [...urdf.getElementsByTagName("link")].map(l => l.getAttribute("name"));
+        links = [...urdf.getElementsByTagName("link")].map(l => ({
+            name: l.getAttribute("name")
+        }));
         joints = [...urdf.getElementsByTagName("joint")].map(j => {
             const parentEl = j.getElementsByTagName("parent")[0];
             const childEl = j.getElementsByTagName("child")[0];
@@ -71,16 +114,14 @@ function loadUrdfFromText(urdfText) {
         // Initialize frame visibility (all visible by default)
         frameVisibility = {};
         links.forEach(link => {
-            frameVisibility[link] = true;
+            frameVisibility[link.name] = true;
         });
 
         // Update "Show All Frames" checkbox state
         const showAllCheckbox = document.getElementById('showAllFramesCheckbox');
         if (showAllCheckbox) {
             showAllCheckbox.checked = true;
-        }
-
-        // Rebuild UI and update visualization
+        }        // Rebuild UI and update visualization
         buildSliderUI();
         buildParentMap();
         updateOutput();
@@ -93,6 +134,11 @@ function loadUrdfFromText(urdfText) {
 
 function loadSampleURDF() {
     currentUrdfText = sampleUrdfText;
+    loadUrdfFromText(currentUrdfText);
+}
+
+function loadSampleURDFVisual() {
+    currentUrdfText = sampleUrdfTextvisual;
     loadUrdfFromText(currentUrdfText);
 }
 
@@ -134,20 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
-    // Add STL file input event listener
-    const stlFileInput = document.getElementById('stlFileInput');
-    if (stlFileInput) {
-        stlFileInput.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (file && typeof loadSTLFile === 'function') {
-                loadSTLFile(file);
-            }
-        });
-    }
-});
-
-function parseOrigin(el) {
+}); function parseOrigin(el) {
     if (!el) return { xyz: [0, 0, 0], rpy: [0, 0, 0] };
     const xyz = el.getAttribute("xyz")?.split(" ").map(Number) || [0, 0, 0];
     const rpy = el.getAttribute("rpy")?.split(" ").map(Number) || [0, 0, 0];
@@ -245,18 +278,18 @@ function buildParentMap() {
 
 function computeFK() {
     let transforms = {};
-    function recurse(link) {
-        if (!parentMap[link]) {
-            transforms[link] = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]];
-            return transforms[link];
+    function recurse(linkName) {
+        if (!parentMap[linkName]) {
+            transforms[linkName] = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]];
+            return transforms[linkName];
         }
-        const joint = parentMap[link];
+        const joint = parentMap[linkName];
         const parentT = recurse(joint.parent);
         const thisT = jointTransform(joint);
-        transforms[link] = matMul(parentT, thisT);
-        return transforms[link];
+        transforms[linkName] = matMul(parentT, thisT);
+        return transforms[linkName];
     }
-    links.forEach(l => recurse(l));
+    links.forEach(l => recurse(l.name));
     return transforms;
 }
 
@@ -311,7 +344,7 @@ function toggleFrameVisibility(linkName, isVisible) {
     // Update the "Show All Frames" checkbox state
     const showAllCheckbox = document.getElementById('showAllFramesCheckbox');
     if (showAllCheckbox) {
-        const allVisible = links.every(link => frameVisibility[link]);
+        const allVisible = links.every(link => frameVisibility[link.name]);
         showAllCheckbox.checked = allVisible;
     }
 
@@ -326,12 +359,12 @@ function toggleFrameVisibility(linkName, isVisible) {
 function toggleAllFrames(showAll) {
     // Update all frame visibility states
     links.forEach(link => {
-        frameVisibility[link] = showAll;
+        frameVisibility[link.name] = showAll;
     });
 
     // Update all individual checkboxes
     links.forEach(link => {
-        const checkbox = document.getElementById(`frame-${link}`);
+        const checkbox = document.getElementById(`frame-${link.name}`);
         if (checkbox) {
             checkbox.checked = showAll;
         }
@@ -352,14 +385,14 @@ function updateOutput() {
     for (const l of links) {
         html += `<div class="matrix">`;
         html += `<div class="matrix-title">`;
-        html += `<input type="checkbox" id="frame-${l}" ${frameVisibility[l] ? 'checked' : ''} onchange="toggleFrameVisibility('${l}', this.checked)"> `;
-        html += `${l} Transform Matrix:</div>`;
-        const T = fk[l];
+        html += `<input type="checkbox" id="frame-${l.name}" ${frameVisibility[l.name] ? 'checked' : ''} onchange="toggleFrameVisibility('${l.name}', this.checked)"> `;
+        html += `${l.name} Transform Matrix:</div>`;
+        const T = fk[l.name];
 
         // Format as proper 4x4 matrix with brackets
         html += `<div class="matrix-row">⎡ ${T[0].map(v => v.toFixed(3).padStart(8)).join('  ')} ⎤</div>`;
         html += `<div class="matrix-row">⎢ ${T[1].map(v => v.toFixed(3).padStart(8)).join('  ')} ⎥</div>`;
-        html += `<div class="matrix-row">⎢ ${T[2].map(v => v.toFixed(3).padStart(8)).join('  ')} ⎦</div>`;
+        html += `<div class="matrix-row">⎢ ${T[2].map(v => v.toFixed(3).padStart(8)).join('  ')} ⎥</div>`;
         html += `<div class="matrix-row">⎣ ${T[3].map(v => v.toFixed(3).padStart(8)).join('  ')} ⎦</div>`;
         html += `</div>`;
     }
