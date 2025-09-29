@@ -52,6 +52,14 @@
             </select>
         </div>
 
+        <div class="form-group">
+            <label>Width: </label>
+            <input type="radio" id="textwidth" name="widthType" value="textwidth" checked>
+            <label for="textwidth">\textwidth</label>
+            <input type="radio" id="columnwidth" name="widthType" value="columnwidth">
+            <label for="columnwidth">\columnwidth</label>
+        </div>
+
         <div class="checkbox-group">
             <div class="checkbox-item">
                 <input type="checkbox" id="addSubcaption" checked>
@@ -68,6 +76,10 @@
             <div class="checkbox-item">
                 <input type="checkbox" id="addVspace" checked>
                 <label for="addVspace">Add \vspace between rows</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="includeSvg" checked>
+                <label for="includeSvg">Include SVG</label>
             </div>
         </div>
 

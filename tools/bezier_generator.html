@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Bezier Generator</title>
+    <link rel="stylesheet" href="../style.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+    <style>
+        canvas {
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <a href="../index.html">Home</a>
+    </div>
+
+    <div class="content">
+        <h1>Bezier Curve Generator</h1>
+        <p>Create and manipulate Bezier curves by adjusting control points. The position, velocity, and acceleration of the curve are displayed in separate plots.</p>
+
+        <div class="instructions">
+            <h3>Instructions</h3>
+            <ul>
+                <li>Drag the red control points to adjust the Bezier curve</li>
+                <li>Change the number of control points and click "Update" to regenerate</li>
+                <li>Upload a CSV file with x,y coordinates to display data points (format: x,y per line)</li>
+                <li>Use "Clear Data Points" to remove all data points</li>
+                <li>Blue line: dx/dt (X velocity), Red line: dy/dt (Y velocity)</li>
+                <li>Blue line: d²x/dt² (X acceleration), Red line: d²y/dt² (Y acceleration)</li>
+            </ul>
+        </div>
+
+        <div class="info-panel">
+            <h3>Bezier Curve Equation</h3>
+            <p>The Bezier curve is defined by the parametric equations:</p>
+            <div style="text-align: center; font-size: 18px; margin: 25px 0;">
+                $$\mathbf{B}(t) = \sum_{i=0}^{n} \mathbf{P}_i \cdot B_{i,n}(t)$$
+            </div>
+            <div style="text-align: center; font-size: 16px; margin: 20px 0;">
+                $$x(t) = \sum_{i=0}^{n} P_{i,x} \cdot B_{i,n}(t)$$
+                $$y(t) = \sum_{i=0}^{n} P_{i,y} \cdot B_{i,n}(t)$$
+            </div>
+            <p style="text-align: center; font-size: 14px; margin: 15px 0;">
+                where the Bernstein basis polynomials are:
+            </p>
+            <div style="text-align: center; font-size: 16px; margin: 20px 0;">
+                $$B_{i,n}(t) = \binom{n}{i} t^i (1-t)^{n-i}$$
+            </div>
+            <p style="text-align: center; font-size: 14px; margin: 15px 0;">
+                and the binomial coefficient is:
+            </p>
+            <div style="text-align: center; font-size: 16px; margin: 20px 0;">
+                $$\binom{n}{i} = \frac{n!}{i!(n-i)!}$$
+            </div>
+            <p style="text-align: center; font-size: 14px; color: #666;">
+                with $t \in [0,1]$ and $n$ = number of control points - 1
+            </p>
+        </div>
+
+        <div class="info-panel">
+            <h3>Current Control Points</h3>
+            <div class="button-group">
+                <button onclick="copyControlPointsPython()" class="btn-copy">Copy as Python List</button>
+                <button onclick="copyControlPointsCpp()" class="btn-copy">Copy as C++ Vector</button>
+                <button onclick="copyControlPointsCSV()" class="btn-copy">Copy as CSV</button>
+            </div>
+            <div id="controlPointsDisplay">
+                <p>Control points will appear here when you interact with the curve.</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="numPoints">Control Points:</label>
+            <input type="number" id="numPoints" min="2" value="4">
+            <button onclick="updateControlPoints()" class="btn-generate">Update Control Points</button>
+        </div>
+
+        <div class="file-input-group">
+            <input type="file" id="csvInput" accept=".csv" />
+            <button onclick="clearDataPoints()" class="btn-copy">Clear Data Points</button>
+        </div>
+
+        <div class="form-group">
+            <label for="xMin">X Min:</label>
+            <input type="number" id="xMin" value="-10" step="0.1">
+            <label for="xMax">X Max:</label>
+            <input type="number" id="xMax" value="10" step="0.1">
+            <label for="yMin">Y Min:</label>
+            <input type="number" id="yMin" value="-10" step="0.1">
+            <label for="yMax">Y Max:</label>
+            <input type="number" id="yMax" value="10" step="0.1">
+            <button onclick="updateAxisRanges()" class="btn-generate">Update Axis Ranges</button>
+        </div>
+
+        <div class="canvas-container">
+            <h4>Position (Canvas)</h4>
+            <canvas id="canvasPosition" width="1000" height="1000"></canvas>
+        </div>
+
+        <div class="canvas-container">
+            <h4>Position (Plotly Interactive)</h4>
+            <div id="plotlyPosition" style="width:1000px; height:1000px; margin:0 auto;"></div>
+        </div>
+
+        <div class="canvas-container">
+            <h4>Velocity (dx/dt, dy/dt vs. t)</h4>
+            <div id="plotlyVelocity" style="width:100%; height:300px;"></div>
+        </div>
+
+        <div class="canvas-container">
+            <h4>Acceleration (d²x/dt², d²y/dt² vs. t)</h4>
+            <div id="plotlyAcceleration" style="width:100%; height:300px;"></div>
+        </div>
+
+        <script src="bezier_generator.js"></script>
+    </div>
+</body>
+
+</html>

@@ -5,10 +5,13 @@ function generateLatex() {
     const addSubcaptionTitle = document.getElementById('addSubcaptionTitle').checked;
     const addHfill = document.getElementById('addHfill').checked;
     const addVspace = document.getElementById('addVspace').checked;
+    const includeSvg = document.getElementById('includeSvg').checked;
+    const widthType = document.querySelector('input[name="widthType"]:checked').value;
     const output = document.getElementById('latexOutput');
 
-    // Calculate subfigure width (e.g., divide 0.9\textwidth by number of columns)
+    // Calculate subfigure width (e.g., divide 0.9\textwidth or \columnwidth by number of columns)
     const subfigWidth = (0.9 / cols).toFixed(3);
+    const widthReference = `\\${widthType}`;
 
     let latexCode = `\\begin{figure}[ht]\n` +
         `    \\centering\n`;
@@ -16,10 +19,14 @@ function generateLatex() {
     // Generate subfigures
     for (let i = 1; i <= rows; i++) {
         for (let j = 1; j <= cols; j++) {
-            latexCode += `    \\begin{subfigure}{${subfigWidth}\\textwidth}\n` +
+            latexCode += `    \\begin{subfigure}{${subfigWidth}${widthReference}}\n` +
                 `        \\centering\n` +
-                `        \\includegraphics[width=\\textwidth]{example-image-a}\n` +
-                `        %\\includesvg[]{your-svg-file.svg} % Uncomment this line to include SVG files\n`;
+                `        \\includegraphics[width=\\textwidth]{example-image-a}\n`;
+
+            // Add SVG line if option is checked (always commented)
+            if (includeSvg) {
+                latexCode += `        %\\includesvg[]{your-svg-file.svg}\n`;
+            }
 
             // Add caption based on checkbox options
             if (addSubcaption) {
