@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document Size Unit Converter</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .unit-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .unit-table th,
+        .unit-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .unit-table th {
+            background: #f1f3f4;
+            font-weight: bold;
+        }
+
+        .unit-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .unit-table .highlight {
+            background: #fff3cd;
+            font-weight: bold;
+        }
+
+        .error {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <a href="../index.html">Home</a>
+    </div>
+
+    <div class="content">
+        <h1>Document Size Unit Converter</h1>
+        <p>Convert between different units used in document processing (LaTeX, Word, CSS, etc.)</p>
+
+        <div class="info-panel">
+            <h3>Unit Converter</h3>
+            <div class="form-group">
+                <label for="inputValue">Value:</label>
+                <input type="number" id="inputValue" step="any" placeholder="Enter value"
+                    style="width: 120px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; margin-right: 10px;">
+                <select id="inputUnit">
+                    <option value="pt">pt (Points)</option>
+                    <option value="pc">pc (Picas)</option>
+                    <option value="mm">mm (Millimeters)</option>
+                    <option value="cm">cm (Centimeters)</option>
+                    <option value="in">in (Inches)</option>
+                    <option value="px">px (Pixels @96dpi)</option>
+                    <option value="em">em (Em units)</option>
+                    <option value="ex">ex (Ex units)</option>
+                </select>
+                <button class="btn-generate" onclick="convertUnits()">Convert</button>
+            </div>
+
+            <div id="results"></div>
+        </div>
+
+        <div class="info-panel">
+            <h3>Unit Reference Table</h3>
+            <table class="unit-table">
+                <thead>
+                    <tr>
+                        <th>Unit</th>
+                        <th>Full Name</th>
+                        <th>Description</th>
+                        <th>1 unit = (in points)</th>
+                        <th>Common Use</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>pt</strong></td>
+                        <td>Point</td>
+                        <td>Traditional typographic unit</td>
+                        <td>1 pt</td>
+                        <td>LaTeX, Typography</td>
+                    </tr>
+                    <tr>
+                        <td><strong>pc</strong></td>
+                        <td>Pica</td>
+                        <td>12 points</td>
+                        <td>12 pt</td>
+                        <td>Typography, Print</td>
+                    </tr>
+                    <tr>
+                        <td><strong>mm</strong></td>
+                        <td>Millimeter</td>
+                        <td>Metric unit</td>
+                        <td>2.834646 pt</td>
+                        <td>LaTeX, International</td>
+                    </tr>
+                    <tr>
+                        <td><strong>cm</strong></td>
+                        <td>Centimeter</td>
+                        <td>10 millimeters</td>
+                        <td>28.34646 pt</td>
+                        <td>LaTeX, International</td>
+                    </tr>
+                    <tr>
+                        <td><strong>in</strong></td>
+                        <td>Inch</td>
+                        <td>Imperial unit</td>
+                        <td>72 pt</td>
+                        <td>US documents, CSS</td>
+                    </tr>
+                    <tr>
+                        <td><strong>px</strong></td>
+                        <td>Pixel</td>
+                        <td>Screen unit (96 DPI)</td>
+                        <td>0.75 pt</td>
+                        <td>Web, Digital</td>
+                    </tr>
+                    <tr>
+                        <td><strong>em</strong></td>
+                        <td>Em</td>
+                        <td>Relative to font size</td>
+                        <td>~12 pt (varies)</td>
+                        <td>CSS, Responsive design</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ex</strong></td>
+                        <td>Ex</td>
+                        <td>Height of letter 'x'</td>
+                        <td>~6 pt (varies)</td>
+                        <td>CSS, Typography</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="instructions">
+            <h3>LaTeX Size Commands</h3>
+            <p>To find document dimensions in LaTeX:</p>
+            <pre><code>\texttt{\string\textwidth}: \the\textwidth
+\texttt{\string\textheight}: \the\textheight
+\texttt{\string\paperwidth}: \the\paperwidth
+\texttt{\string\paperheight}: \the\paperheight</code></pre>
+        </div>
+
+        <div class="version-info">
+            <p>Version: 1.0.0</p>
+        </div>
+
+        <script src="latex_size_calculator.js"></script>
+    </div>
+</body>
+
+</html>
