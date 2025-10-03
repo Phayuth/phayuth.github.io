@@ -7,6 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>PhayuthIO</title>
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>">
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -14,65 +16,87 @@
   <div class="sidebar">
     <a href="index.html">Home</a>
     <a href="tabs/publications.html">Publications</a>
-    <a href="tabs/projects.html">Projects</a>
   </div>
 
   <div class="content">
-    <h1>Welcome to Phayuth's blog</h1>
-    <p>This blog is a collection some my work and notes regarding robotics and software development.</p>
-    <img src="https://avatars.githubusercontent.com/u/70325209?v=4" alt="Description of image" width="170" height="170">
+    <div class="welcome-card">
+      <div class="welcome-content">
+        <div class="welcome-text">
+          <h1>👋 Welcome / Bienvenue / 어서오세요 / ようこそ / ស្វាគមន៍</h1>
+          <p>This is Phayuth's blog. It is a collection of my work and notes regarding robotics and software
+            development.
+          </p>
+        </div>
+        <div class="welcome-image">
+          <img src="https://avatars.githubusercontent.com/u/70325209?v=4" alt="Phayuth's Profile Picture" width="170"
+            height="170">
+        </div>
+      </div>
+    </div>
 
-    <h2>Media</h2>
-    <div style="margin-top: 20px;">
-      <a href="https://github.com/Phayuth" class="button-link" target="_blank"
-        style="display: flex; align-items: center; margin-bottom: 10px; text-decoration: none;">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="Github Logo"
-          width="24" height="24" style="margin-right: 8px;">
-        Github
-      </a>
+    <div class="cards-container">
+      <div class="section-card">
+        <h2>Media</h2>
+        <div class="card-content">
+          <a href="https://github.com/Phayuth" class="button-link" target="_blank">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="Github Logo"
+              width="24" height="24">
+            Github
+          </a>
 
-      <a href="https://www.youtube.com/@nobby-robot" class="button-link" target="_blank"
-        style="display: flex; align-items: center; text-decoration: none;">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png"
-          alt="Youtube Logo" width="24" height="24" style="margin-right: 8px;">
-        Youtube
-      </a>
+          <a href="https://www.youtube.com/@nobby-robot" class="button-link" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png"
+              alt="Youtube Logo" width="24" height="24">
+            Youtube
+          </a>
 
-      <a href="https://sites.google.com/view/airlab-jnu/airlab" class="button-link" target="_blank"
-        style="display: flex; align-items: center; text-decoration: none; margin-top: 10px;">
-        <img src="https://img.icons8.com/ios-filled/50/000000/home.png" alt="Home Logo" width="24" height="24"
-          style="margin-right: 8px;">
-        AirLab JNU
-      </a>
+          <a href="https://sites.google.com/view/airlab-jnu/airlab" class="button-link" target="_blank">
+            <img src="https://img.icons8.com/ios-filled/50/000000/home.png" alt="Home Logo" width="24" height="24">
+            AirLab JNU
+          </a>
+        </div>
+      </div>
 
-      <h2>Tools</h2>
-      <a href="tools/frame_viewer.html">Frame Viewer</a><br>
-      <a href="tools/latex_subfig.html">Latex Subfigure Generator</a><br>
-      <a href="tools/latex_size_calculator.html">Latex Size Calculator</a><br>
-      <a href="tools/figure_sizer.html">Figure Sizer</a><br>
-      <a href="tools/joint_trajectory_plotter.html">Joint Trajectory Plotter</a><br>
-      <a href="tools/urdf_viewer.html">URDF Viewer</a><br>
-      <a href="tools/image_hsv_segmenter.html">Image HSV Segmenter</a><br>
-      <a href="tools/bezier_generator.html">Bezier Curve Generator</a><br>
-      <a href="tools/spline_interpolater.html">Spline Interpolater</a><br>
+      <div class="section-card">
+        <h2>Tools</h2>
+        <div class="card-content">
+          <a href="tools/frame_viewer.html">Frame Viewer</a>
+          <a href="tools/latex_subfig.html">Latex Subfigure Generator</a>
+          <a href="tools/latex_size_calculator.html">Latex Size Calculator</a>
+          <a href="tools/figure_sizer.html">Figure Sizer</a>
+          <a href="tools/joint_trajectory_plotter.html">Joint Trajectory Plotter</a>
+          <a href="tools/urdf_viewer.html">URDF Viewer</a>
+          <a href="tools/image_hsv_segmenter.html">Image HSV Segmenter</a>
+          <a href="tools/bezier_generator.html">Bezier Curve Generator</a>
+          <a href="tools/spline_interpolater.html">Spline Interpolater</a>
+        </div>
+      </div>
 
-      <h2>Notes</h2>
-      <a href="https://phayuth.github.io/lectures_note/compilation/document.pdf">Lecture Note</a><br>
-      <a href="https://phayuth.github.io/lectures_note/mobile_robot/document.pdf">Mobile Robotic</a><br>
-      <a href="https://phayuth.github.io/lectures_note/arm_robot/document.pdf">Robotic Manipulator</a><br>
-      <a href="https://phayuth.github.io/lectures_note/robotics/document.pdf">Robotics</a><br>
+      <div class="section-card">
+        <h2>Notes</h2>
+        <div class="card-content">
+          <a href="https://phayuth.github.io/lectures_note/compilation/document.pdf">Lecture Note</a>
+          <a href="https://phayuth.github.io/lectures_note/mobile_robot/document.pdf">Mobile Robotic</a>
+          <a href="https://phayuth.github.io/lectures_note/arm_robot/document.pdf">Robotic Manipulator</a>
+          <a href="https://phayuth.github.io/lectures_note/robotics/document.pdf">Robotics</a>
+        </div>
+      </div>
 
-      <h2>Posts</h2>
-      <a href="posts/cuda.html">Install CUDA in ubuntu system</a><br>
-      <a href="posts/ros2.html">ROS2 Humble</a><br>
-      <a href="posts/constantport.html">Create udev rule to consistently assign port to usb</a><br>
-      <a href="posts/ubuntu-stuck.html">Fixing Ubuntu boot stuck because of Nvidia driver</a><br>
-      <a href="posts/dcmotor.html">Parameters Estimation and Control of DC Motor</a><br>
-      <a href="posts/beaglebone.html">Beaglebone Blue Guide</a><br>
-      <a href="posts/jetbot.html">Jetson Jetbot using some other electronic parts</a><br>
-      <a href="posts/picam.html">Jetson Nano, with PiCam2, Gstreamer, Gstreamer Pipeline</a><br>
-      <a href="posts/kalman.html">Kalman filter example</a><br>
-      <a href="posts/ros1.html">ROS Melodic</a><br>
+      <div class="section-card">
+        <h2>Posts</h2>
+        <div class="card-content">
+          <a href="posts/cuda.html">Install CUDA in ubuntu system</a>
+          <a href="posts/ros2.html">ROS2 Humble</a>
+          <a href="posts/constantport.html">Create udev rule to consistently assign port to usb</a>
+          <a href="posts/ubuntu-stuck.html">Fixing Ubuntu boot stuck because of Nvidia driver</a>
+          <a href="posts/dcmotor.html">Parameters Estimation and Control of DC Motor</a>
+          <a href="posts/beaglebone.html">Beaglebone Blue Guide</a>
+          <a href="posts/jetbot.html">Jetson Jetbot using some other electronic parts</a>
+          <a href="posts/picam.html">Jetson Nano, with PiCam2, Gstreamer, Gstreamer Pipeline</a>
+          <a href="posts/kalman.html">Kalman filter example</a>
+          <a href="posts/ros1.html">ROS Melodic</a>
+        </div>
+      </div>
     </div>
   </div>
 </body>
