@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Linux Commands</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+    <div class="sidebar">
+        <a href="../index.html">Home</a>
+
+    </div>
+    <div class="content">
+        <h1>Linux Commands</h1>
+        <p>These are some useful Linux commands:</p>
+
+        <h2>Local</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Command</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>sudo chmod 666 /dev/ttyUSB0 </code></td>
+                    <td>Change permissions of a device file</td>
+                </tr>
+                <tr>
+                    <td><code>sudo chown $USER /dev/ttyUSB0 </code></td>
+                    <td>Change ownership of a device file</td>
+                </tr>
+                <tr>
+                    <td><code>sudo chmod +x file </code></td>
+                    <td>Make a file executable</td>
+                </tr>
+                <tr>
+                    <td><code>sudo usermod -a -G dialout $USER </code></td>
+                    <td>Add user to the dialout group</td>
+                </tr>
+                <tr>
+                    <td><code>/bin/udevadm info --name=/dev/ttyUSB0</code></td>
+                    <td>Get information about a USB device</td>
+                </tr>
+                <tr>
+                    <td><code>ls -l /dev/serial/by-id/</code></td>
+                    <td>List serial devices by ID</td>
+                </tr>
+                <tr>
+                    <td><code>usb-devices</code></td>
+                    <td>List USB devices</td>
+                </tr>
+                <tr>
+                    <td><code>lsusb</code></td>
+                    <td>List USB devices</td>
+                </tr>
+                <tr>
+                    <td><code>sudo dmesg | grep tty</code></td>
+                    <td>Check kernel messages for serial devices</td>
+                </tr>
+                <tr>
+                    <td><code>sudo dmesg | grep usb</code></td>
+                    <td>Check kernel messages for USB devices</td>
+                </tr>
+                <tr>
+                    <td><code>ifconfig</code></td>
+                    <td>Display network interface information</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Remote / Server</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Command</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>sudo reboot</code></td>
+                    <td>Reboot the system</td>
+                </tr>
+                <tr>
+                    <td><code>sudo shutdown -h now</code></td>
+                    <td>Shutdown the system immediately</td>
+                </tr>
+                <tr>
+                    <td><code>htop</code></td>
+                    <td>Interactive process viewer</td>
+                </tr>
+                <tr>
+                    <td><code>top</code></td>
+                    <td>Display running processes</td>
+                </tr>
+                <tr>
+                    <td><code>ps aux</code></td>
+                    <td>List all running processes</td>
+                </tr>
+                <tr>
+                    <td><code>netstat -tuln</code></td>
+                    <td>Display listening ports and services</td>
+                </tr>
+                <tr>
+                    <td><code>scp /from/host /to/host </code></td>
+                    <td>Securely copy files between hosts</td>
+                </tr>
+                <tr>
+                    <td><code>-----------</code></td>
+                    <td><code>scp /local/file user@192.168.0.1:/home/user/path/to/dir/</code> Copy local file to remote
+                        directory</td>
+                </tr>
+                <tr>
+                    <td><code>-----------</code></td>
+                    <td><code>scp user@192.168.0.1:/home/user/path/to/file /local/path/</code> Copy remote file to local
+                        directory</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Tools</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Command</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>python -m http.server 8000</code></td>
+                    <td>Start a simple HTTP server on port 8000 [u can access it and download files]</td>
+                </tr>
+                <tr>
+                    <td><code>convert -trim input.png output.png</code></td>
+                    <td>Trim whitespace from an image</td>
+                </tr>
+                <tr>
+                    <td><code>pdftk input.pdf burst</code></td>
+                    <td>Split a PDF into individual pages <code>[install sudo apt install pdftk-java]</code></td>
+                </tr>
+                <tr>
+                    <td><code>pdftoppm input.pdf output -png</code></td>
+                    <td>Convert PDF pages to PNG images</td>
+                </tr>
+                <tr>
+                    <td><code>pdfcrop input.pdf output.pdf</code></td>
+                    <td>Crop the white margins of a PDF file</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Docker</h2>
+        <h3>Run a Docker container with GPU support</h3>
+
+        <pre><code>docker run --gpus all -it --rm -v $(pwd):/workspace -w /workspace pytorch/pytorch:2.5.1-cuda12.1-cudnn9-runtime /bin/bash
+            </code></pre>
+
+        <p>Explanation of the command:</p>
+
+        <ul>
+            <li><code>docker run</code> - Runs a new container.</li>
+            <li><code>--gpus all</code> - Enables GPU access (requires NVIDIA drivers and
+                <code>nvidia-container-toolkit</code>).
+            </li>
+            <li><code>-it</code> - Starts an interactive terminal.</li>
+            <li><code>--rm</code> - Removes the container automatically when it exits.</li>
+            <li><code>-v $(pwd):/workspace</code> - Mounts the current directory into <code>/workspace</code>
+                inside the container.</li>
+            <li><code>-w /workspace</code> - Sets <code>/workspace</code> as the working directory.</li>
+            <li><code>pytorch/pytorch:2.5.1-cuda12.1-cudnn9-runtime</code> - Specifies the Docker image to use.</li>
+            <li><code>/bin/bash</code> - Starts an interactive Bash shell.</li>
+        </ul>
+        <p>
+            If you started the container without <code>--rm</code> and want to leave it running in the background,
+            press <code>Ctrl + P</code>, then <code>Ctrl + Q</code> in sequence. This detaches from the container
+            and returns you to your host shell while the container continues running.
+        </p>
+
+        <p>
+            You can reattach later with:<code>docker attach &lt;container_id&gt;</code>
+        </p>
+        <p>
+            To check that the container is still running: <code>docker ps</code>
+        </p>
+        <p>
+            To stop a detached container: <code>docker stop &lt;container_id&gt;</code>
+        </p>
+        <p>
+            To remove it completely after it has stopped: <code>docker rm &lt;container_id&gt;</code>
+        </p>
+
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Command</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>docker ps</code></td>
+                    <td>List running Docker containers</td>
+                </tr>
+                <tr>
+                    <td><code>docker ps -a</code></td>
+                    <td>List all Docker containers (running and stopped)</td>
+                </tr>
+                <tr>
+                    <td><code>docker stop &lt;containerId&gt;</code></td>
+                    <td>Stop a running Docker container</td>
+                </tr>
+                <tr>
+                    <td><code>docker rm &lt;containerId&gt;</code></td>
+                    <td>Remove a stopped Docker container</td>
+                </tr>
+                <tr>
+                    <td><code>docker cp <containerId>:/file/path/within/container /host/path/target</code></td>
+                    <td>Copy files between a container and the host</td>
+                </tr>
+                <tr>
+                    <td><code>docker images</code></td>
+                    <td>List Docker images</td>
+                </tr>
+                <tr>
+                    <td><code>docker -help</code></td>
+                    <td>Display Docker help information</td>
+                </tr>
+                <tr>
+                    <td><code>docker exec -it &lt;containerId&gt; bash</code></td>
+                    <td>Multiple Terminal</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</body>
+
+</html>
