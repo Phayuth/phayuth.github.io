@@ -78,7 +78,13 @@ function rotMatrixToQuat(R) {
         const s = 2.0 * Math.sqrt(1.0 + m22 - m00 - m11);
         qw = (m10 - m01) / s; qx = (m02 + m20) / s; qy = (m12 + m21) / s; qz = 0.25 * s;
     }
-    return [qx, qy, qz, qw];
+    const norm = Math.hypot(qx, qy, qz, qw);
+
+    if (!Number.isFinite(norm) || norm === 0) {
+        return [NaN, NaN, NaN, NaN];
+    }
+
+    return [qx / norm, qy / norm, qz / norm, qw / norm];
 }
 
 function showMatrix() {

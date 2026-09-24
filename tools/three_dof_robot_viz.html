@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three DOF Robot</title>
+    <link rel="stylesheet" href="../style.css">
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+    <style>
+        .figure-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .figure-container,
+        .control-group {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 20px;
+            border-left: 4px solid #2196F3;
+        }
+
+        .figure-container h3,
+        .control-group h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .plot {
+            width: 100%;
+            height: 480px;
+        }
+
+        .controls-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .slider-container {
+            display: grid;
+            grid-template-columns: auto minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .slider-container label {
+            width: auto;
+            margin: 0;
+            font-weight: bold;
+            color: #555;
+            white-space: nowrap;
+        }
+
+        .slider-row {
+            display: contents;
+        }
+
+        .slider-row input[type="range"] {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .slider-row>span {
+            white-space: nowrap;
+            font-size: 12px;
+        }
+
+        .slider-container>select {
+            grid-column: 2 / 4;
+            min-width: 0;
+        }
+
+        .value-display {
+            min-width: 40px;
+            text-align: center;
+            font-weight: bold;
+            color: #4CAF50;
+            font-family: 'Courier New', monospace;
+        }
+
+        .status {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .status.loading {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .status.ready {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .coordinate-info,
+        .control-note {
+            color: #666;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+
+            .controls-section,
+            .figure-section {
+                grid-template-columns: 1fr;
+            }
+
+            .plot {
+                height: 380px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <a href="../index.html">Home</a>
+    </div>
+
+    <div class="content">
+        <h1>Three DOF Robot (Kinematic Redundancy)</h1>
+        This tool visualizes a 3-DOF planar robot and its reachable workspace. You can adjust the joint angles and link
+        lengths to see how the robot's configuration changes in both task space and configuration space.
+        <p><em>Remember that the nullspace solution of a kinematic redundancy is not guarantee to be continuous.
+                Therefore,
+                the nullspace motion may not be smooth or predictable. You may see a jump in solution while the plot
+                line is
+                continuous. This is because of the line plot rendering, which connects the points with a straight line.
+            </em></p>
+
+
+        <div id="status" class="status ready">Use the controls below to explore the robot.</div>
+
+        <div class="figure-section">
+            <div class="figure-container">
+                <h3>2D Taskspace</h3>
+                <div id="workspacePlot" class="plot"></div>
+                <div class="coordinate-info">The shaded annulus is the reachable position workspace.</div>
+            </div>
+            <div class="figure-container">
+                <h3>3D Configuration Space</h3>
+                <div id="cspacePlot" class="plot"></div>
+                <div class="coordinate-info">Each curve is one position-only IK branch.</div>
+            </div>
+        </div>
+
+        <div class="controls-section">
+            <div class="control-group">
+                <h3>Joint limits and configuration</h3>
+                <div class="slider-container">
+                    <label for="q1">q1: <span id="q1Value" class="value-display">0.00</span> rad</label>
+                    <div class="slider-row"><input id="q1" type="range" min="-3.14" max="3.14" step="0.01"
+                            value="0"><span>[-pi, pi]</span></div>
+                </div>
+                <div class="slider-container">
+                    <label for="q2">q2: <span id="q2Value" class="value-display">0.00</span> rad</label>
+                    <div class="slider-row"><input id="q2" type="range" min="-3.14" max="3.14" step="0.01"
+                            value="0"><span>[-pi, pi]</span></div>
+                </div>
+                <div class="slider-container">
+                    <label for="q3">q3: <span id="q3Value" class="value-display">0.00</span> rad</label>
+                    <div class="slider-row"><input id="q3" type="range" min="-3.14" max="3.14" step="0.01"
+                            value="0"><span>[-pi, pi]</span></div>
+                </div>
+                <div class="slider-container">
+                    <label for="branchSelect">IK branch:</label>
+                    <select id="branchSelect">
+                        <option value="1">Elbow branch +1</option>
+                        <option value="-1">Elbow branch -1</option>
+                    </select>
+                </div>
+                <div class="slider-container">
+                    <label for="nullspace">Nullspace position: <span id="nullspaceValue"
+                            class="value-display">0.50</span></label>
+                    <div class="slider-row"><input id="nullspace" type="range" min="0" max="100" step="1"
+                            value="50"><span>[0, 1]</span></div>
+                </div>
+                <div class="control-note">Moving a joint shows that configuration and updates the taskspace marker.
+                </div>
+            </div>
+            <div class="control-group">
+                <h3>Link lengths</h3>
+                <div class="slider-container">
+                    <label for="l1">l1: <span id="l1Value" class="value-display">1.00</span></label>
+                    <div class="slider-row"><input id="l1" type="range" min="0.2" max="2.0" step="0.05"
+                            value="1"><span>[0.2, 2.0]</span></div>
+                </div>
+                <div class="slider-container">
+                    <label for="l2">l2: <span id="l2Value" class="value-display">1.00</span></label>
+                    <div class="slider-row"><input id="l2" type="range" min="0.2" max="2.0" step="0.05"
+                            value="1"><span>[0.2, 2.0]</span></div>
+                </div>
+                <div class="slider-container">
+                    <label for="l3">l3: <span id="l3Value" class="value-display">1.00</span></label>
+                    <div class="slider-row"><input id="l3" type="range" min="0.2" max="2.0" step="0.05"
+                            value="1"><span>[0.2, 2.0]</span></div>
+                </div>
+                <div class="control-note">Changing links length will effect the reachable workspace.
+                </div>
+            </div>
+        </div>
+
+        <div class="version-info">
+            <p>Version: 1.0.0</p>
+        </div>
+    </div>
+    <script src="three_dof_robot_viz.js"></script>
+</body>
+
+</html>

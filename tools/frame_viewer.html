@@ -22,18 +22,21 @@
             display: flex;
             height: 100%;
             width: 100%;
+            box-sizing: border-box;
         }
 
         #localsidebar {
-            width: 500px;
+            flex: 0 0 560px;
             background: #eee;
             padding: 10px;
             overflow-y: auto;
+            overflow-x: hidden;
             box-sizing: border-box;
         }
 
         #framePlot {
             flex: 1;
+            min-width: 0;
             background: #fff;
         }
 
@@ -54,6 +57,7 @@
             width: 100%;
             margin-top: 8px;
             margin-bottom: 5px;
+            box-sizing: border-box;
         }
 
         h3 {
