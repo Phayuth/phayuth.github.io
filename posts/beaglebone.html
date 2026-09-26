@@ -12,15 +12,23 @@
 <body>
     <div class="sidebar">
         <a href="../index.html">Home</a>
-
+        <a href="../posts/beaglebone.html">Table of Contents</a>
+        <a href="../posts/beaglebone.html#update">Update BBB Debian</a>
+        <a href="../posts/beaglebone.html#download">Images Download</a>
+        <a href="../posts/beaglebone.html#flashemmc">Flash Image eMMC Flasher</a>
+        <a href="../posts/beaglebone.html#flashnonemmc">Flash Image Non-eMMC Flasher</a>
+        <a href="../posts/beaglebone.html#wifi">Connect to WiFi</a>
+        <a href="../posts/beaglebone.html#shutdown">Shutdown BBB</a>
+        <a href="../posts/beaglebone.html#autoexec">Auto Execute Program on Startup</a>
     </div>
     <div class="content">
         <h1>Beaglebone Blue Guide</h1>
         <p>Beaglebone Blue is a Linux Debian-based OS device that allows users to experiment with robotic projects.
-            There are 3 ways to power the board. You can plug all 3 power sources at the same time without any problems.
+        </p>
+        <p>There are 3 ways to power the board. You can plug all 3 power sources at the same time without any problems.
         </p>
 
-        <h2>Update BBB Debian</h2>
+        <h2 id="update">Update BBB Debian</h2>
         <ul>
             <li>BBB can run from 2 storage sources:
                 <ul>
@@ -32,13 +40,14 @@
             <li>If you need to update the Debian OS, follow the instructions below.</li>
         </ul>
 
-        <h2>Images Download</h2>
-        <a href="https://beagleboard.org/latest-images">Image Download Link</a>
+        <h2 id="download">Images Download</h2>
+        Please download the official image here <a href="https://beagleboard.org/latest-images">Image Download Link</a>
         <p><a href="https://debian.beagleboard.org/images/bone-debian-9.5-iot-armhf-2018-10-07-4gb.img.xz">Debian
-                9.5 2018-10-07 4GB SD IoT</a> (Allows the BBB to boot directly from the SD card) [MATLAB compatible!!!]</p>
+                9.5 2018-10-07 4GB SD IoT</a> (Allows the BBB to boot directly from the SD card) [MATLAB compatible!!!]
+        </p>
         <p>Debian 9.5 2018-10-07 4GB SD IoT eMMC flasher (Requires the BBB to flash the eMMC before use)</p>
 
-        <h2>Flash Image eMMC Flasher</h2>
+        <h2 id="flashemmc">Flash Image eMMC Flasher</h2>
         <ol>
             <li>Download <a href="https://www.balena.io/etcher/">BalenaEtcher</a></li>
             <li>Flash the downloaded image to the SD card using BalenaEtcher</li>
@@ -48,7 +57,7 @@
             <li>When new storage appears on the PC, the BBB is ready to use</li>
         </ol>
 
-        <h2>Flash Image Non-eMMC Flasher</h2>
+        <h2 id="flashnonemmc">Flash Image Non-eMMC Flasher</h2>
         <p>Follow the procedure from the "Flash Image eMMC Flasher" section.</p>
         <ol>
             <li>Connect to the BBB via the browser Cloud9 IDE at: <code>192.168.7.2:3000</code></li>
@@ -62,7 +71,7 @@ sudo ./init-eMMC-flasher-v3.sh
             <li>Wait until the LEDs completely shut down, then unplug and replug the power.</li>
         </ol>
 
-        <h2>Connect to WiFi</h2>
+        <h2 id="wifi">Connect to WiFi</h2>
         <p>On the Terminal in Cloud9 IDE, run the following commands:</p>
         <pre><code>
 connmanctl
@@ -76,12 +85,12 @@ password
 exit
         </code></pre>
 
-        <h2>Shutdown BBB</h2>
+        <h2 id="shutdown">Shutdown BBB</h2>
         <pre><code>
 sudo shutdown now
         </code></pre>
 
-        <h2>Auto Execute Program on Startup</h2>
+        <h2 id="autoexec">Auto Execute Program on Startup</h2>
         <p>References: <a
                 href="https://stackoverflow.com/questions/28854705/executing-a-script-on-startup-using-beaglebone-black">Link1</a>
             | <a href="https://gist.github.com/tstellanova/7323116">Link2</a></p>

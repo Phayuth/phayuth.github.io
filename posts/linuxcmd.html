@@ -12,13 +12,17 @@
 <body>
     <div class="sidebar">
         <a href="../index.html">Home</a>
-
+        <a href="../posts/linuxcmd.html">Table of Contents</a>
+        <a href="../posts/linuxcmd.html#local">Local</a>
+        <a href="../posts/linuxcmd.html#remote">Remote / Server</a>
+        <a href="../posts/linuxcmd.html#tools">Tools</a>
+        <a href="../posts/linuxcmd.html#docker">Docker</a>
     </div>
     <div class="content">
         <h1>Linux Commands</h1>
         <p>These are some useful Linux commands:</p>
 
-        <h2>Local</h2>
+        <h2 id="local">Local</h2>
         <table>
             <thead>
                 <tr>
@@ -74,7 +78,7 @@
             </tbody>
         </table>
 
-        <h2>Remote / Server</h2>
+        <h2 id="remote">Remote / Server</h2>
         <table>
             <thead>
                 <tr>
@@ -124,7 +128,7 @@
             </tbody>
         </table>
 
-        <h2>Tools</h2>
+        <h2 id="tools">Tools</h2>
         <table>
             <thead>
                 <tr>
@@ -156,7 +160,7 @@
             </tbody>
         </table>
 
-        <h2>Docker</h2>
+        <h2 id="docker">Docker</h2>
         <h3>Run a Docker container with GPU support</h3>
 
         <pre><code>docker run --gpus all -it --rm -v $(pwd):/workspace -w /workspace pytorch/pytorch:2.5.1-cuda12.1-cudnn9-runtime /bin/bash
